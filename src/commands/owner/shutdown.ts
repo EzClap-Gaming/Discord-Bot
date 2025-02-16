@@ -4,7 +4,7 @@ import { Command } from '../../functions/handleCommands';
 const ShutdownCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('shutdown')
-        .setDescription('Fährt den Bot herunter. Dies kann nur vom Bot-Besitzer verwendet werden. ⚠️'),
+        .setDescription('Fährt den Bot herunter. Dies kann nur vom Bot-Besitzer verwendet werden.'),
     async execute(interaction: ChatInputCommandInteraction) {
         try {
             const botOwnerId = process.env.BOT_OWNER_ID;

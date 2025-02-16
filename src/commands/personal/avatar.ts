@@ -4,7 +4,7 @@ import { Command } from '../../functions/handleCommands';
 const AvatarCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('avatar')
-        .setDescription('Zeigt den Avatar eines Benutzers an. 🖼️')
+        .setDescription('Zeigt den Avatar eines Benutzers an.')
         .addUserOption(option => 
             option.setName('user')
                 .setDescription('Der Benutzer, dessen Avatar angezeigt werden soll 👤')

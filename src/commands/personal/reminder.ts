@@ -5,7 +5,7 @@ import { ReminderModel } from '../../models/Reminder';
 const ReminderCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('reminder')
-        .setDescription('Setze eine Erinnerung. ⏰')
+        .setDescription('Setze eine Erinnerung.')
         .addStringOption(option => 
             option.setName('message')
                 .setDescription('Die Nachricht der Erinnerung 📝')
