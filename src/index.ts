@@ -51,18 +51,18 @@ for (const folder of commandFolders) {
             .then((commandModule) => {
                 const command = commandModule.default;
 
-                console.info(`[Discord] Loading Command: ${file}`);
+                console.info(`Loading Command: ${file}`);
 
                 if (!command?.data?.name) {
                     console.error(
-                        `[Discord] Command in file ${file} is missing a 'data.name' property.`,
+                        `Command in file ${file} is missing a 'data.name' property.`,
                     );
                     return;
                 }
 
                 client.commands.set(command.data.name, command);
             })
-            .catch((err) => console.error(`[Discord] Error loading command ${file}: ${err}`));
+            .catch((err) => console.error(`Error loading command ${file}: ${err}`));
     }
 }
 
