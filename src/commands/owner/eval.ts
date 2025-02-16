@@ -4,10 +4,10 @@ import { Command } from '../../functions/handleCommands';
 const EvalCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('eval')
-        .setDescription('Executes a JavaScript code snippet. This can only be used by the bot owner. 🔒')
+        .setDescription('Führt einen JavaScript-Codeausschnitt aus. Dieser kann nur vom Bot-Besitzer verwendet werden. 🔒')
         .addStringOption(option =>
             option.setName('code')
-                .setDescription('The JavaScript code to execute. 📝')
+                .setDescription('Der auszuführende JavaScript-Code. 📝')
                 .setRequired(true)
         ),
     async execute(interaction: ChatInputCommandInteraction) {
@@ -16,8 +16,8 @@ const EvalCommand: Command = {
 
             if (interaction.user.id !== botOwnerId) {
                 const permissionEmbed = new EmbedBuilder()
-                    .setColor('#FF0000')
-                    .setDescription('❌ You do not have permission to use this command.');
+                    .setColor('Random')
+                    .setDescription('❌ Sie sind nicht berechtigt, diesen Befehl zu verwenden.');
 
                 await interaction.reply({ embeds: [permissionEmbed], ephemeral: true });
                 return;
@@ -26,7 +26,7 @@ const EvalCommand: Command = {
             const code = interaction.options.getString('code');
             if (!code) {
                 interaction.reply({
-                    content: '⚠️ Please provide some code to execute.',
+                    content: '⚠️ Bitte geben Sie Code zur Ausführung an.',
                     ephemeral: true
                 });
                 return;
@@ -36,16 +36,16 @@ const EvalCommand: Command = {
             if (result instanceof Promise) result = await result;
 
             const resultEmbed = new EmbedBuilder()
-                .setColor('#00FF00')
-                .setDescription(`✅ Result:\n\`\`\`js\n${result}\n\`\`\``);
+                .setColor('Random')
+                .setDescription(`✅ Ergebnis:\n\`\`\`js\n${result}\n\`\`\``);
 
             await interaction.reply({ embeds: [resultEmbed], ephemeral: true });
         } catch (error) {
-            console.error('[Eval] Error executing code:', error);
+            console.error('Error executing code:', error);
 
             const errorEmbed = new EmbedBuilder()
-                .setColor('#FF0000')
-                .setDescription(`❌ Error executing code:\n\`\`\`js\n${error}\n\`\`\``);
+                .setColor('Random')
+                .setDescription(`❌ Fehler beim Ausführen des Codes:\n\`\`\`js\n${error}\n\`\`\``);
 
             await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
         }

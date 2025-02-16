@@ -3,7 +3,7 @@ import { Command } from "../../functions/handleCommands";
 
 const RollDiceCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName('würfeln')
+        .setName('roll-dice')
         .setDescription('Würfle einen Würfel und erhalte eine Zahl zwischen 1 und 6!'),
 
     async execute(interaction: ChatInputCommandInteraction) {

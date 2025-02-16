@@ -4,15 +4,15 @@ import { Command } from '../../functions/handleCommands';
 const LogoutCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('logout')
-        .setDescription('Logs out the bot. This can only be used by the bot owner. 🔑'),
+        .setDescription('Meldet den Bot ab. Dies kann nur vom Bot-Besitzer verwendet werden. 🔑'),
     async execute(interaction: ChatInputCommandInteraction) {
         try {
             const botOwnerId = process.env.BOT_OWNER_ID;
 
             if (interaction.user.id !== botOwnerId) {
                 const permissionEmbed = new EmbedBuilder()
-                    .setColor('#FF0000')
-                    .setDescription('❌ You do not have permission to use this command.');
+                    .setColor('Random')
+                    .setDescription('❌ Du hast keine Berechtigung, diesen Befehl zu verwenden.');
 
                 await interaction.reply({ embeds: [permissionEmbed], ephemeral: true });
                 return;
@@ -20,7 +20,7 @@ const LogoutCommand: Command = {
 
             const loggingOutEmbed = new EmbedBuilder()
                 .setColor('#FFFF00')
-                .setDescription('🔄 Logging out...');
+                .setDescription('🔄 Der Bot meldet sich ab...');
 
             await interaction.deferReply({ ephemeral: true });
 
@@ -30,17 +30,17 @@ const LogoutCommand: Command = {
 
             setTimeout(async () => {
                 const loggedOutEmbed = new EmbedBuilder()
-                    .setColor('#FF0000')
-                    .setDescription('🔴 Logged out already.');
+                    .setColor('Random')
+                    .setDescription('🔴 Der Bot wurde erfolgreich abgemeldet.');
 
                 await interaction.editReply({ embeds: [loggedOutEmbed] });
             }, 3000);
         } catch (error) {
-            console.error('[Logout] Error logging out:', error);
+            console.error('Error logging out:', error);
 
             const errorEmbed = new EmbedBuilder()
-                .setColor('#FF0000')
-                .setDescription('⚠️ An error occurred while logging out. Please try again later.');
+                .setColor('Random')
+                .setDescription('⚠️ Ein Fehler ist beim Abmelden aufgetreten. Bitte versuche es später erneut.');
 
             await interaction.editReply({ embeds: [errorEmbed] });
         }

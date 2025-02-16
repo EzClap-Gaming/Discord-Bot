@@ -14,7 +14,7 @@ const categoryEmojis: { [key: string]: string } = {
 
 const HelpCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName('hilfe')
+        .setName('help')
         .setDescription('Zeigt alle verfügbaren Befehle kategorisiert mit Seitenumblätterung.'),
 
     async execute(interaction: ChatInputCommandInteraction) {

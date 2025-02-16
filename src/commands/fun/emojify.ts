@@ -14,7 +14,7 @@ const EmojifyCommand: Command = {
         }).join(' ');
 
         const emojifyEmbed = new EmbedBuilder()
-            .setColor('#00BFFF')
+            .setColor('Random')
             .setDescription(emojifiedText);
 
         await interaction.reply({ embeds: [emojifyEmbed] });

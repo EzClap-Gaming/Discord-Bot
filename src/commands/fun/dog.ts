@@ -4,7 +4,7 @@ import { Command } from '../../functions/handleCommands';
 
 const DogCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName('hund')
+        .setName('dog')
         .setDescription('Zeigt ein zufälliges Hundebild.'),
     
     async execute(interaction: ChatInputCommandInteraction) {
@@ -13,7 +13,7 @@ const DogCommand: Command = {
             const dogImage = response.data.message;
 
             const dogEmbed = new EmbedBuilder()
-                .setColor('#FF6347')
+                .setColor('Random')
                 .setImage(dogImage)
                 .setDescription('Hier ist ein zufälliger Hund für dich! 🐶');
 
@@ -21,7 +21,7 @@ const DogCommand: Command = {
         } catch (error) {
             console.error('Error fetching dog image:', error);
             const errorEmbed = new EmbedBuilder()
-                .setColor('#FF0000')
+                .setColor('Random')
                 .setDescription('Es gab einen Fehler beim Abrufen eines Hundebildes. Bitte versuche es später noch einmal.');
             await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
         }

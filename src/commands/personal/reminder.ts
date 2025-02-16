@@ -4,28 +4,28 @@ import { ReminderModel } from '../../models/Reminder';
 
 const ReminderCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName('erinnerung')
+        .setName('reminder')
         .setDescription('Setze eine Erinnerung. ⏰')
         .addStringOption(option => 
-            option.setName('nachricht')
+            option.setName('message')
                 .setDescription('Die Nachricht der Erinnerung 📝')
                 .setRequired(true)
         )
         .addIntegerOption(option => 
-            option.setName('zeit')
+            option.setName('time')
                 .setDescription('Zeit in Minuten, bevor du erinnert wirst ⏳')
                 .setRequired(true)
                 .setMinValue(1)
         ),
 
     async execute(interaction: ChatInputCommandInteraction) {
-        const nachricht = interaction.options.getString('nachricht')!;
-        const zeit = interaction.options.getInteger('zeit')!;
+        const message = interaction.options.getString('message')!;
+        const time = interaction.options.getInteger('time')!;
 
         const erinnerung = new ReminderModel({
             userId: interaction.user.id,
-            message: nachricht,
-            time: Date.now() + zeit * 60000,
+            message: message,
+            time: Date.now() + time * 60000,
         });
 
         await erinnerung.save();
@@ -33,7 +33,7 @@ const ReminderCommand: Command = {
         const erinnerungEmbed = new EmbedBuilder()
             .setColor('#FFCC00')
             .setTitle('Erinnerung gesetzt 🔔')
-            .setDescription(`Ich werde dich in ${zeit} Minute(n) erinnern: "${nachricht}" ⏰`);
+            .setDescription(`Ich werde dich in ${time} Minute(n) erinnern: "${message}" ⏰`);
 
         await interaction.reply({ embeds: [erinnerungEmbed] });
 
@@ -50,7 +50,7 @@ const ReminderCommand: Command = {
                     .setDescription(`Erinnerung: "${gespeicherteErinnerung.message}" ⏰`);
                 await interaction.followUp({ embeds: [erinnerungZeitEmbed] });
             }
-        }, zeit * 60000);
+        }, time * 60000);
     },
 };
 

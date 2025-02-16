@@ -3,22 +3,22 @@ import { Command } from '../../functions/handleCommands';
 
 const PollCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName('umfrage')
+        .setName('poll')
         .setDescription('Erstellt eine Umfrage mit Ja/Nein-Antworten.')
-        .addStringOption(option => option.setName('frage').setDescription('Die Frage der Umfrage').setRequired(true))
+        .addStringOption(option => option.setName('question').setDescription('Die Frage der Umfrage').setRequired(true))
         .addIntegerOption(option => 
-            option.setName('dauer')
+            option.setName('duration')
                 .setDescription('Dauer der Umfrage in Minuten')
                 .setRequired(false)
                 .setMinValue(1)
                 .setMaxValue(1440)
         ),
     async execute(interaction: ChatInputCommandInteraction) {
-        const question = interaction.options.getString('frage')!;
-        const duration = interaction.options.getInteger('dauer') || 5;
+        const question = interaction.options.getString('question')!;
+        const duration = interaction.options.getInteger('duration') || 5;
 
         const pollEmbed = new EmbedBuilder()
-            .setColor('#32CD32')
+            .setColor('Random')
             .setTitle('Umfrage')
             .setDescription(`**Frage**: ${question}\n\nReagiere mit ✅ für Ja oder ❌ für Nein.\n\nDie Umfrage endet in **${duration} Minuten**.`)
             .setFooter({ text: `Umfrage erstellt von ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
@@ -35,7 +35,7 @@ const PollCommand: Command = {
             const noVotes = updatedPoll.reactions.cache.get('❌')?.count || 0;
 
             const resultEmbed = new EmbedBuilder()
-                .setColor('#32CD32')
+                .setColor('Random')
                 .setTitle('Umfrage beendet')
                 .setDescription(`**Frage**: ${question}\n\n**Ja**: ${yesVotes - 1} Stimmen\n**Nein**: ${noVotes - 1} Stimmen`)
                 .setFooter({ text: `Umfrage beendet von ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })

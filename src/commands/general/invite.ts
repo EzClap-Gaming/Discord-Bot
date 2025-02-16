@@ -3,7 +3,7 @@ import { Command } from '../../functions/handleCommands';
 
 const InviteCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName('einladen')
+        .setName('invite')
         .setDescription('Erhalte einen Einladungslink für den Server.'),
     async execute(interaction: ChatInputCommandInteraction) {
         const textChannel = interaction.guild?.channels.cache.find(channel => channel.type === ChannelType.GuildText) as TextChannel;

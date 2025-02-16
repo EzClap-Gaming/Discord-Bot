@@ -5,33 +5,33 @@ import { exec } from 'child_process';
 const RestartCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('restart')
-        .setDescription('Restarts the bot. This can only be used by the bot owner. 🔄'),
+        .setDescription('Startet den Bot neu. Dies kann nur vom Bot-Besitzer verwendet werden. 🔄'),
     async execute(interaction: ChatInputCommandInteraction) {
         try {
             const botOwnerId = process.env.BOT_OWNER_ID;
 
             if (interaction.user.id !== botOwnerId) {
                 const permissionEmbed = new EmbedBuilder()
-                    .setColor('#FF0000')
-                    .setDescription('❌ You do not have permission to use this command.');
+                    .setColor('Random')
+                    .setDescription('❌ Du hast keine Berechtigung, diesen Befehl zu verwenden.');
 
                 await interaction.reply({ embeds: [permissionEmbed], ephemeral: true });
                 return;
             }
 
             const restartingEmbed = new EmbedBuilder()
-                .setColor('#FFFF00')
-                .setDescription('🔄 Restarting...');
+                .setColor('Random')
+                .setDescription('🔄 Der Bot wird neu gestartet...');
 
             await interaction.deferReply({ ephemeral: true });
             await interaction.editReply({ embeds: [restartingEmbed] });
 
-            exec('pm2 restart API-DEV', (error, stdout, stderr) => {
+            exec('pm2 restart Bot-EzClap', (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);
                     const errorEmbed = new EmbedBuilder()
-                        .setColor('#FF0000')
-                        .setDescription('⚠️ An error occurred while restarting the bot using PM2. Please try again later.');
+                        .setColor('Random')
+                        .setDescription('⚠️ Ein Fehler ist beim Neustart des Bots über PM2 aufgetreten. Bitte versuche es später erneut.');
 
                     interaction.editReply({ embeds: [errorEmbed] });
                     return;
@@ -45,18 +45,18 @@ const RestartCommand: Command = {
                 console.log(`stdout: ${stdout}`);
 
                 const successEmbed = new EmbedBuilder()
-                    .setColor('#00FF00')
-                    .setDescription('✅ The bot has been restarted successfully.');
+                    .setColor('Random')
+                    .setDescription('✅ Der Bot wurde erfolgreich neu gestartet.');
 
                 interaction.editReply({ embeds: [successEmbed] });
             });
 
         } catch (error) {
-            console.error('[Restart] Error restarting:', error);
+            console.error('Error restarting:', error);
 
             const errorEmbed = new EmbedBuilder()
-                .setColor('#FF0000')
-                .setDescription('⚠️ An error occurred while restarting. Please try again later.');
+                .setColor('Random')
+                .setDescription('⚠️ Ein Fehler ist beim Neustart aufgetreten. Bitte versuche es später erneut.');
 
             await interaction.editReply({ embeds: [errorEmbed] });
         }

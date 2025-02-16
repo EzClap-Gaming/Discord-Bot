@@ -6,20 +6,20 @@ const AvatarCommand: Command = {
         .setName('avatar')
         .setDescription('Zeigt den Avatar eines Benutzers an. 🖼️')
         .addUserOption(option => 
-            option.setName('benutzer')
+            option.setName('user')
                 .setDescription('Der Benutzer, dessen Avatar angezeigt werden soll 👤')
                 .setRequired(false)
         ),
 
     async execute(interaction: ChatInputCommandInteraction) {
-        const benutzer = interaction.options.getUser('benutzer') || interaction.user;
+        const user = interaction.options.getUser('user') || interaction.user;
 
-        const avatarURL = benutzer.displayAvatarURL({ size: 512 });
+        const avatarURL = user.displayAvatarURL({ size: 512 });
 
         const embed = new EmbedBuilder()
-            .setColor('#00AAFF')
-            .setTitle(`${benutzer.username}'s Avatar 🖼️`)
-            .setDescription(`Hier ist der Avatar von **${benutzer.username}**. 🌟`)
+            .setColor('Random')
+            .setTitle(`${user.username}'s Avatar 🖼️`)
+            .setDescription(`Hier ist der Avatar von **${user.username}**. 🌟`)
             .setImage(avatarURL)
             .setFooter({ text: `Angefordert von ${interaction.user.username} 👑`, iconURL: interaction.user.displayAvatarURL() })
             .setTimestamp();

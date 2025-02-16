@@ -13,7 +13,7 @@ const CatCommand: Command = {
             const catImage = response.data[0].url;
 
             const catEmbed = new EmbedBuilder()
-                .setColor('#FF1493')
+                .setColor('Random')
                 .setImage(catImage)
                 .setDescription('Hier ist eine zufällige Katze für dich! 🐱');
 
@@ -21,7 +21,7 @@ const CatCommand: Command = {
         } catch (error) {
             console.error('Error fetching cat image:', error);
             const errorEmbed = new EmbedBuilder()
-                .setColor('#FF0000')
+                .setColor('Random')
                 .setDescription('Es gab einen Fehler beim Abrufen eines Katzenbildes. Bitte versuche es später noch einmal.');
             await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
         }

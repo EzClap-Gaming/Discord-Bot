@@ -9,22 +9,22 @@ const LevelCommand: Command = {
         .setDescription('Überprüfe dein Level und deine XP-Statistiken.')
         .addSubcommand(subcommand =>
             subcommand
-                .setName('aktuell')
+                .setName('current')
                 .setDescription('Überprüfe dein aktuelles Level und XP.')
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('fortschritt')
+                .setName('progress')
                 .setDescription('Überprüfe deinen Fortschritt zum nächsten Level.')
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('rangliste')
+                .setName('leaderboard')
                 .setDescription('Zeige die Rangliste der höchsten Level-Nutzer im Server.')
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('statistiken')
+                .setName('statistics')
                 .setDescription('Überprüfe deine Level-Statistiken der letzten 30 Tage.')
         ),
 
@@ -35,7 +35,7 @@ const LevelCommand: Command = {
         if (commandName === 'level') {
             const subcommand = options.getSubcommand();
 
-            if (subcommand === 'aktuell') {
+            if (subcommand === 'current') {
                 const levelData = await LevelUtil.getUserLevelData(userId);
                 if (!levelData) {
                     interaction.reply({ embeds: [new EmbedBuilder().setColor('Random').setDescription('Keine Level-Daten für diesen Benutzer gefunden.')] });
@@ -57,7 +57,7 @@ const LevelCommand: Command = {
                 await interaction.reply({ embeds: [embed] });
             }
 
-            if (subcommand === 'fortschritt') {
+            if (subcommand === 'progress') {
                 const levelData = await LevelUtil.getUserLevelData(userId);
                 if (!levelData) {
                     interaction.reply({ embeds: [new EmbedBuilder().setColor('Random').setDescription('Keine Level-Daten für diesen Benutzer gefunden.')] });
@@ -113,7 +113,7 @@ const LevelCommand: Command = {
                 await interaction.reply({ embeds: [embed] });
             }
 
-            if (subcommand === 'rangliste') {
+            if (subcommand === 'leaderboard') {
                 const leaderboard = await LevelUtil.getLeaderboardData();
                 if (!leaderboard || leaderboard.length === 0) {
                     interaction.reply({ embeds: [new EmbedBuilder().setColor('Random').setDescription('Keine Ranglistendaten gefunden.')] });
@@ -156,7 +156,7 @@ const LevelCommand: Command = {
                 await interaction.reply({ embeds: [embed] });
             }
 
-            if (subcommand === 'statistiken') {
+            if (subcommand === 'statistics') {
                 const userData = await Level.findOne({ userId });
                 if (!userData) {
                     interaction.reply({ embeds: [new EmbedBuilder().setColor('Random').setDescription('Keine Level-Daten für diesen Benutzer gefunden.')] });

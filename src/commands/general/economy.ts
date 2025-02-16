@@ -8,102 +8,130 @@ interface ShopItem {
 }
 
 const shopItems: ShopItem[] = [
-    { name: 'Bycicle', price: 1500 },
-    { name: 'Console', price: 800 },
-    { name: 'Computer', price: 7500 },
-    { name: '10x Games', price: 220 },
-    { name: 'Toyota Car', price: 45000 },
-    { name: 'Mercedes Car', price: 82000 },
-    { name: 'BMW Car', price: 68000 },
-    { name: 'Porsche Car', price: 110000 },
-    { name: 'Lamborghini Car', price: 280000 },
-    { name: 'Pagani Car', price: 4000000 },
+    { name: 'Glock-18', price: 200 },
+    { name: 'P2000', price: 200 },
+    { name: 'USP-S', price: 200 },
+    { name: 'P250', price: 300 },
+    { name: 'Five-Seven', price: 500 },
+    { name: 'CZ-75', price: 500 },
+    { name: 'Tec-9', price: 500 },
+    { name: 'Deser Eagle', price: 700 },
+    { name: 'R8 Revolver', price: 600 },
+    { name: 'Dual Barretta', price: 500 },
+    { name: 'MAG-7', price: 1200 },
+    { name: 'Nova', price: 2200 },
+    { name: 'Sawed-Off', price: 1200 },
+    { name: 'XM1014', price: 2000 },
+    { name: 'MAC-10', price: 1050 },
+    { name: 'MP5-SD', price: 1500 },
+    { name: 'MP7', price: 1500 },
+    { name: 'MP9', price: 1250 },
+    { name: 'PP-Bizon', price: 1400 },
+    { name: 'P90', price: 2350 },
+    { name: 'UMP-45', price: 1200 },
+    { name: 'AK-47', price: 2700 },
+    { name: 'AUG', price: 3300 },
+    { name: 'FAMAS', price: 2050 },
+    { name: 'Galil AR', price: 1800 },
+    { name: 'M4A4', price: 3100 },
+    { name: 'M4A1-S', price: 2900 },
+    { name: 'SG 553', price: 3000 },
+    { name: 'AWP', price: 4750 },
+    { name: 'G3SG1', price: 5000 },
+    { name: 'SCAR-20', price: 5000 },
+    { name: 'SSG 08', price: 1700 },
+    { name: 'M249', price: 5200 },
+    { name: 'Negev', price: 1700 },
 ];
 
 const EconomyCommand: Command = {
     data: new SlashCommandBuilder()
         .setName('economy')
-        .setDescription('Manage your economy system.')
+        .setDescription('Verwalten Sie Ihr Wirtschaftssystem.')
         .addSubcommand(subcommand =>
             subcommand
                 .setName('add-coins')
-                .setDescription('Add coins to a user.')
+                .setDescription('Fügen Sie einem Benutzer Münzen hinzu.')
                 .addUserOption(option =>
-                    option.setName('target').setDescription('The user to add coins to.').setRequired(true)
+                    option.setName('target').setDescription('Der Benutzer, dem Münzen hinzugefügt werden sollen.').setRequired(true)
                 )
                 .addIntegerOption(option =>
-                    option.setName('amount').setDescription('The amount of coins to add.').setRequired(true)
+                    option.setName('amount').setDescription('Die Anzahl der hinzuzufügenden Münzen.').setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('balance')
-                .setDescription('Check your current balance.')
+                .setDescription('Prüfen Sie Ihren aktuellen Kontostand.')
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('bank')
-                .setDescription('View your bank balance.')
+                .setDescription('Sehen Sie sich Ihren Kontostand an.')
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('bet')
-                .setDescription('Bet money to win or lose!')
-                .addIntegerOption(option => option.setName('amount').setDescription('The amount to bet').setRequired(true))
+                .setDescription('Setzen Sie Geld, um zu gewinnen oder zu verlieren!')
+                .addIntegerOption(option => option.setName('amount').setDescription('Der zu setzende Betrag').setRequired(true))
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('daily')
-                .setDescription('Claim your daily reward.')
+                .setDescription('Fordern Sie Ihre tägliche Belohnung an.')
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('deposit')
-                .setDescription('Deposit coins into your bank.')
+                .setDescription('Zahlen Sie Münzen auf Ihr Bankkonto ein.')
                 .addIntegerOption(option =>
                     option.setName('amount')
-                        .setDescription('Amount of coins to deposit.')
+                        .setDescription('Anzahl der einzuzahlenden Münzen.')
                         .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('leaderboard')
-                .setDescription('Displays the top users by balance.')
+                .setDescription('Zeigt die Top-Benutzer nach Guthaben an.')
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('pay')
-                .setDescription('Send coins to another user.')
+                .setDescription('Senden Sie Münzen an einen anderen Benutzer.')
                 .addUserOption(option =>
                     option.setName('recipient')
-                        .setDescription('The user you want to send coins to.')
+                        .setDescription('Der Benutzer, an den Sie Münzen senden möchten.')
                         .setRequired(true)
                 )
                 .addIntegerOption(option =>
                     option.setName('amount')
-                        .setDescription('The amount of coins to send.')
+                        .setDescription('Die Anzahl der zu sendenden Münzen.')
                         .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('rob')
-                .setDescription('Attempt to rob another user!')
+                .setDescription('Versuch, einen anderen Benutzer auszurauben!')
                 .addUserOption(option =>
                     option.setName('target')
-                        .setDescription('The user to rob')
+                        .setDescription('Der Benutzer zu rauben')
                         .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName('shop')
-                .setDescription('Browse and purchase items from the shop.')
+                .setDescription('Durchsuchen und kaufen Sie Artikel im Shop.')
                 .addStringOption(option =>
                     option.setName('item')
-                        .setDescription('The item you want to buy.')
-                        .addChoices({ name: 'Golden Sword', value: 'Golden Sword' }, { name: 'Shield', value: 'Shield' }, { name: 'Health Potion', value: 'Health Potion' })
+                        .setDescription('Der Artikel, den Sie kaufen möchten.')
+                        .addChoices(
+                            { name: 'Golden Sword', value: 'Golden Sword' },
+                            { name: 'Shield', value: 'Shield' },
+                            { name: 'Health Potion', value: 'Health Potion' },
+                        )
                         .setRequired(false)
                 )
         )
@@ -130,7 +158,7 @@ const EconomyCommand: Command = {
         try {
             if (subcommand === 'add-coins') {
                 if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator)) {
-                    await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie sind nicht berechtigt, diesen Befehl zu verwenden.', ephemeral: true });
                     return;
                 }
 
@@ -138,7 +166,7 @@ const EconomyCommand: Command = {
                 const amount = interaction.options.getInteger('amount');
 
                 if (!target || !amount || amount <= 0) {
-                    await interaction.reply({ content: 'Invalid user or amount.', ephemeral: true });
+                    await interaction.reply({ content: 'Ungültiger Benutzer oder Betrag.', ephemeral: true });
                     return;
                 }
 
@@ -152,9 +180,9 @@ const EconomyCommand: Command = {
                 await economy.save();
 
                 const embed = new EmbedBuilder()
-                    .setColor('Green')
-                    .setTitle('Coins Added')
-                    .setDescription(`💸 Successfully added **${amount} coins** to ${target.username}.`)
+                    .setColor('Random')
+                    .setTitle('Hinzugefügte Münzen')
+                    .setDescription(`💸 **${amount} Münzen** erfolgreich zu ${target.username} hinzugefügt.`)
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
 
@@ -169,9 +197,9 @@ const EconomyCommand: Command = {
                 }
 
                 const embed = new EmbedBuilder()
-                    .setColor('Green')
-                    .setTitle('Your Balance')
-                    .setDescription(`💰 You currently have **${economy.balance} coins**.`)
+                    .setColor('Random')
+                    .setTitle('Ihr Guthaben')
+                    .setDescription(`💰 Sie haben derzeit **${economy.balance} Münzen**.`)
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
 
@@ -181,16 +209,16 @@ const EconomyCommand: Command = {
                 const economy = await Economy.findOne({ userId });
 
                 if (!economy) {
-                    await interaction.reply({ content: 'You do not have an account yet.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie haben noch kein Konto.', ephemeral: true });
                     return;
                 }
 
                 const embed = new EmbedBuilder()
-                    .setColor('Blue')
-                    .setTitle('Bank Balance')
+                    .setColor('Random')
+                    .setTitle('Kontostand')
                     .addFields(
-                        { name: 'Wallet Balance', value: `${economy.balance} coins`, inline: true },
-                        { name: 'Bank Balance', value: `${economy.bankBalance || 0} coins`, inline: true },
+                        { name: 'Wallet-Guthaben', value: `${economy.balance} coins`, inline: true },
+                        { name: 'Kontostand', value: `${economy.bankBalance || 0} coins`, inline: true },
                     )
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
@@ -201,7 +229,7 @@ const EconomyCommand: Command = {
                 const betAmount = interaction.options.getInteger('amount') || 0;
 
                 if (betAmount <= 0) {
-                    await interaction.reply({ content: 'You must bet a positive amount!', ephemeral: true });
+                    await interaction.reply({ content: 'Sie müssen einen positiven Betrag setzen!', ephemeral: true });
                     return;
                 }
 
@@ -209,14 +237,14 @@ const EconomyCommand: Command = {
 
                 if (!userEconomy) {
                     await interaction.reply({
-                        content: "You don't have an account! Use /createaccount to get started.",
+                        content: "Sie haben kein Konto! Verwenden Sie /createaccount, um zu beginnen.",
                         ephemeral: true,
                     });
                     return;
                 }
 
                 if (userEconomy.balance < betAmount) {
-                    await interaction.reply({ content: 'You do not have enough money to bet this amount.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie haben nicht genug Geld, um diesen Betrag zu setzen.', ephemeral: true });
                     return;
                 }
 
@@ -227,17 +255,17 @@ const EconomyCommand: Command = {
                     const winnings = betAmount * 2;
                     userEconomy.balance += betAmount;
                     embed
-                        .setColor('Green')
-                        .setTitle('You Won!')
-                        .setDescription(`You bet **$${betAmount}** and won **$${winnings}**!`)
-                        .setFooter({ text: `New Balance: $${userEconomy.balance}` });
+                        .setColor('Random')
+                        .setTitle('Du hast gewonnen!')
+                        .setDescription(`Sie haben **$${betAmount}** gesetzt und **$${winnings}** gewonnen!`)
+                        .setFooter({ text: `Neuer Kontostand: $${userEconomy.balance}` });
                 } else {
                     userEconomy.balance -= betAmount;
                     embed
-                        .setColor('Red')
-                        .setTitle('You Lost!')
-                        .setDescription(`You bet **$${betAmount}** and lost it all.`)
-                        .setFooter({ text: `New Balance: $${userEconomy.balance}` });
+                        .setColor('Random')
+                        .setTitle('Du hast verloren!')
+                        .setDescription(`Sie haben **$${betAmount}** gesetzt und alles verloren.`)
+                        .setFooter({ text: `Neuer Kontostand: $${userEconomy.balance}` });
                 }
 
                 await userEconomy.save();
@@ -259,7 +287,7 @@ const EconomyCommand: Command = {
                 const lastDaily = economy.lastDaily;
 
                 if (lastDaily && now.getDate() === lastDaily.getDate() && now.getMonth() === lastDaily.getMonth() && now.getFullYear() === lastDaily.getFullYear()) {
-                    await interaction.reply({ content: 'You have already claimed your daily reward today!', ephemeral: true });
+                    await interaction.reply({ content: 'Sie haben Ihre Tagesbelohnung heute bereits eingefordert!', ephemeral: true });
                     return;
                 }
 
@@ -276,9 +304,9 @@ const EconomyCommand: Command = {
                 await economy.save();
 
                 const embed = new EmbedBuilder()
-                    .setColor('Yellow')
-                    .setTitle('Daily Reward Claimed')
-                    .setDescription(`🎉 You received **${totalReward} coins**!\nCurrent Streak: **${economy.dailyStreak} days**`)
+                    .setColor('Random')
+                    .setTitle('Tägliche Belohnung eingefordert')
+                    .setDescription(`🎉 Du hast **${totalReward} Münzen** erhalten!\nAktuelle Serie: **${economy.dailyStreak} Tage**`)
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
 
@@ -288,14 +316,14 @@ const EconomyCommand: Command = {
                 const amount = interaction.options.getInteger('amount');
 
                 if (!amount || amount <= 0) {
-                    await interaction.reply({ content: 'You must deposit a valid amount.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie müssen einen gültigen Betrag einzahlen.', ephemeral: true });
                     return;
                 }
 
                 const economy = await Economy.findOne({ userId });
 
                 if (!economy || economy.balance < amount) {
-                    await interaction.reply({ content: 'You don’t have enough coins to deposit.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie haben nicht genügend Münzen zum Einzahlen.', ephemeral: true });
                     return;
                 }
 
@@ -304,9 +332,9 @@ const EconomyCommand: Command = {
                 await economy.save();
 
                 const embed = new EmbedBuilder()
-                    .setColor('Green')
-                    .setTitle('Deposit Successful')
-                    .setDescription(`You deposited **${amount} coins** into your bank.`)
+                    .setColor('Random')
+                    .setTitle('Einzahlung erfolgreich')
+                    .setDescription(`Sie haben **${amount} Münzen** auf Ihre Bank eingezahlt.`)
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
 
@@ -318,13 +346,13 @@ const EconomyCommand: Command = {
 
                 const embed = new EmbedBuilder()
                     .setColor('Gold')
-                    .setTitle('Top 10 Richest Users')
+                    .setTitle('Top 10 der reichsten Benutzer')
                     .setDescription(
                         topUsers
-                            .map((user, index) => `**${index + 1}.** <@${user.userId}> - **${user.balance} coins**`)
-                            .join('\n') || 'No users found.'
+                            .map((user, index) => `**${index + 1}.** <@${user.userId}> - **${user.balance} Münzen**`)
+                            .join('\n') || 'Keine Benutzer gefunden.'
                     )
-                    .setFooter({ text: 'Leaderboard', iconURL: interaction.user.displayAvatarURL() })
+                    .setFooter({ text: 'Bestenliste', iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: false });
@@ -334,12 +362,12 @@ const EconomyCommand: Command = {
                 const senderId = interaction.user.id;
 
                 if (!recipient || !amount || amount <= 0) {
-                    await interaction.reply({ content: 'Invalid recipient or amount.', ephemeral: true });
+                    await interaction.reply({ content: 'Ungültiger Empfänger oder Betrag.', ephemeral: true });
                     return;
                 }
 
                 if (recipient.id === senderId) {
-                    await interaction.reply({ content: 'You cannot send coins to yourself.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie können sich selbst keine Münzen senden.', ephemeral: true });
                     return;
                 }
 
@@ -347,7 +375,7 @@ const EconomyCommand: Command = {
                 const recipientEconomy = await Economy.findOne({ userId: recipient.id });
 
                 if (!senderEconomy || senderEconomy.balance < amount) {
-                    await interaction.reply({ content: 'You do not have enough coins to complete this transaction.', ephemeral: true });
+                    await interaction.reply({ content: 'Sie haben nicht genügend Münzen, um diese Transaktion abzuschließen.', ephemeral: true });
                     return;
                 }
 
@@ -362,9 +390,9 @@ const EconomyCommand: Command = {
                 await senderEconomy.save();
 
                 const embed = new EmbedBuilder()
-                    .setColor('Blue')
-                    .setTitle('Payment Successful')
-                    .setDescription(`You sent **${amount} coins** to **${recipient.username}**.`)
+                    .setColor('Random')
+                    .setTitle('Zahlung erfolgreich')
+                    .setDescription(`Sie haben **${amount} Münzen** an **${recipient.username}** gesendet.`)
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp();
 
@@ -375,7 +403,7 @@ const EconomyCommand: Command = {
 
                 if (!targetUser || targetUser.id === userId) {
                     await interaction.reply({
-                        content: 'You cannot rob yourself or an invalid target.',
+                        content: 'Sie können weder sich selbst noch ein ungültiges Ziel ausrauben.',
                         ephemeral: true,
                     });
                     return;
@@ -389,7 +417,7 @@ const EconomyCommand: Command = {
 
                     if (!userEconomy || !targetEconomy) {
                         await interaction.reply({
-                            content: "Either you or the target doesn't have an account!",
+                            content: "Entweder Sie oder das Ziel haben kein Konto!",
                             ephemeral: true,
                         });
                         return;
@@ -398,7 +426,7 @@ const EconomyCommand: Command = {
                     if (userEconomy.robCooldown && now.getTime() - userEconomy.robCooldown.getTime() < 7200000) {
                         const remaining = 7200000 - (now.getTime() - userEconomy.robCooldown.getTime());
                         await interaction.reply({
-                            content: `You can rob again in ${Math.ceil(remaining / 60000)} minutes.`,
+                            content: `Sie können in ${Math.ceil(remaining / 60000)} Minuten erneut rauben.`,
                             ephemeral: true,
                         });
                         return;
@@ -406,7 +434,7 @@ const EconomyCommand: Command = {
 
                     if (targetEconomy.balance < 100) {
                         await interaction.reply({
-                            content: 'Your target does not have enough money to rob!',
+                            content: 'Ihr Ziel hat nicht genug Geld, um es auszurauben!',
                             ephemeral: true,
                         });
                         return;
@@ -425,9 +453,9 @@ const EconomyCommand: Command = {
                         await interaction.reply({
                             embeds: [
                                 new EmbedBuilder()
-                                    .setColor('Green')
-                                    .setTitle('Robbery Success!')
-                                    .setDescription(`You successfully robbed **$${stolenAmount}** from ${targetUser.username}!`),
+                                    .setColor('Random')
+                                    .setTitle('Raubüberfall erfolgreich!')
+                                    .setDescription(`Sie haben erfolgreich **$${stolenAmount}** von ${targetUser.username} ausgeraubt!`),
                             ],
                             ephemeral: true,
                         });
@@ -438,16 +466,16 @@ const EconomyCommand: Command = {
                         await interaction.reply({
                             embeds: [
                                 new EmbedBuilder()
-                                    .setColor('Red')
-                                    .setTitle('Robbery Failed!')
-                                    .setDescription(`You were caught trying to rob ${targetUser.username} and failed miserably!`),
+                                    .setColor('Random')
+                                    .setTitle('Raubüberfall fehlgeschlagen!')
+                                    .setDescription(`Sie wurden beim Versuch erwischt, ${targetUser.username} auszurauben und sind kläglich gescheitert!`),
                             ],
                             ephemeral: true,
                         });
                     }
                 } catch (error) {
                     console.error('Rob command error:', error);
-                    await interaction.reply({ content: 'An error occurred while trying to rob.', ephemeral: true });
+                    await interaction.reply({ content: 'Beim Versuch, den Datenträger auszurauben, ist ein Fehler aufgetreten.', ephemeral: true });
                 }
             } else if (subcommand === 'shop') {
                 try {
@@ -455,10 +483,10 @@ const EconomyCommand: Command = {
         
                     if (!selectedItem) {
                         const embed = new EmbedBuilder()
-                            .setColor('Yellow')
-                            .setTitle('Shop Items')
+                            .setColor('Random')
+                            .setTitle('Shop-Artikel')
                             .setDescription(
-                                shopItems.map(item => `**${item.name}** - ${item.price} coins`).join('\n')
+                                shopItems.map(item => `**${item.name}** - ${item.price} Münzen`).join('\n')
                             )
                             .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                             .setTimestamp();
@@ -469,13 +497,13 @@ const EconomyCommand: Command = {
         
                     const item = shopItems.find(i => i.name === selectedItem);
                     if (!item) {
-                        await interaction.reply({ content: 'Invalid item selected.', ephemeral: true });
+                        await interaction.reply({ content: 'Ungültiges Element ausgewählt.', ephemeral: true });
                         return;
                     }
         
                     const economy = await Economy.findOne({ userId });
                     if (!economy || economy.balance < item.price) {
-                        await interaction.reply({ content: `You don't have enough coins to buy this item.`, ephemeral: true });
+                        await interaction.reply({ content: `Sie haben nicht genügend Münzen, um diesen Artikel zu kaufen.`, ephemeral: true });
                         return;
                     }
         
@@ -483,16 +511,16 @@ const EconomyCommand: Command = {
                     await economy.save();
         
                     const embed = new EmbedBuilder()
-                        .setColor('Green')
-                        .setTitle('Purchase Successful')
-                        .setDescription(`You purchased **${item.name}** for **${item.price} coins**.`)
+                        .setColor('Random')
+                        .setTitle('Kauf erfolgreich')
+                        .setDescription(`Sie haben **${item.name}** für **${item.price} Münzen** gekauft.`)
                         .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                         .setTimestamp();
         
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                 } catch (error) {
-                    console.error('[Shop Command] Error:', error);
-                    await interaction.reply({ content: 'An error occurred while processing your purchase.', ephemeral: true });
+                    console.error('Error:', error);
+                    await interaction.reply({ content: 'Bei der Bearbeitung Ihres Kaufs ist ein Fehler aufgetreten.', ephemeral: true });
                 }
             } else if (subcommand === 'work') {
                 const userId = interaction.user.id;
@@ -502,7 +530,7 @@ const EconomyCommand: Command = {
                     let userEconomy = await Economy.findOne({ userId });
                     if (!userEconomy) {
                         await interaction.reply({
-                            content: "You don't have an account! Use /createaccount to get started.",
+                            content: "Sie haben kein Konto! Verwenden Sie /createaccount, um zu beginnen.",
                             ephemeral: true,
                         });
                         return;
@@ -511,7 +539,7 @@ const EconomyCommand: Command = {
                     if (userEconomy.workCooldown && now.getTime() - userEconomy.workCooldown.getTime() < 3600000) {
                         const remaining = 3600000 - (now.getTime() - userEconomy.workCooldown.getTime());
                         await interaction.reply({
-                            content: `You can work again in ${Math.ceil(remaining / 60000)} minutes.`,
+                            content: `Sie können in ${Math.ceil(remaining / 60000)} Minuten wieder arbeiten.`,
                             ephemeral: true,
                         });
                         return;
@@ -523,10 +551,10 @@ const EconomyCommand: Command = {
                     await userEconomy.save();
 
                     const embed = new EmbedBuilder()
-                        .setColor('Green')
-                        .setTitle('Work Success!')
-                        .setDescription(`You earned **$${earnings}**!`)
-                        .setFooter({ text: `New Balance: $${userEconomy.balance}` });
+                        .setColor('Random')
+                        .setTitle('Erfolg bei der Arbeit!')
+                        .setDescription(`Sie haben **$${earnings}** verdient!`)
+                        .setFooter({ text: `Neuer Kontostand: $${userEconomy.balance}` });
 
                     await interaction.reply({
                         embeds: [embed],
@@ -534,7 +562,7 @@ const EconomyCommand: Command = {
                     });
                 } catch (error) {
                     console.error('Work command error:', error);
-                    await interaction.reply({ content: 'An error occurred while working.', ephemeral: true });
+                    await interaction.reply({ content: 'Während der Arbeit ist ein Fehler aufgetreten.', ephemeral: true });
                 }
             } else if (subcommand === 'withdraw') {
                 try {
@@ -542,14 +570,14 @@ const EconomyCommand: Command = {
                     const amount = interaction.options.getInteger('amount');
         
                     if (!amount || amount <= 0) {
-                        await interaction.reply({ content: 'Invalid amount.', ephemeral: true });
+                        await interaction.reply({ content: 'Ungültiger Betrag.', ephemeral: true });
                         return;
                     }
         
                     const economy = await Economy.findOne({ userId });
         
                     if (!economy || economy.balance < amount) {
-                        await interaction.reply({ content: 'You do not have enough coins to withdraw.', ephemeral: true });
+                        await interaction.reply({ content: 'Sie haben nicht genügend Münzen zum Abheben.', ephemeral: true });
                         return;
                     }
         
@@ -557,21 +585,21 @@ const EconomyCommand: Command = {
                     await economy.save();
         
                     const embed = new EmbedBuilder()
-                        .setColor('Green')
-                        .setTitle('Withdrawal Successful')
-                        .setDescription(`You withdrew **${amount} coins** from your balance.`)
+                        .setColor('Random')
+                        .setTitle('Auszahlung erfolgreich')
+                        .setDescription(`Sie haben **${amount} Münzen** von Ihrem Guthaben abgehoben.`)
                         .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                         .setTimestamp();
         
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                 } catch (error) {
-                    console.error('[Withdraw Command] Error:', error);
-                    await interaction.reply({ content: 'An error occurred while processing your withdrawal.', ephemeral: true });
+                    console.error('Error:', error);
+                    await interaction.reply({ content: 'Bei der Bearbeitung Ihrer Auszahlung ist ein Fehler aufgetreten.', ephemeral: true });
                 }
             }
         } catch (error) {
-            console.error('[Economy Command] Error:', error);
-            await interaction.reply({ content: 'An error occurred while processing your command.', ephemeral: true });
+            console.error('Error:', error);
+            await interaction.reply({ content: 'Beim Verarbeiten Ihres Befehls ist ein Fehler aufgetreten.', ephemeral: true });
         }
     },
 };
