@@ -1,15 +1,17 @@
-import { Client, Message } from 'discord.js';
-import { AntiLink } from '../models/AntiLink';
+import { Client, Message } from "discord.js";
+import { AntiLink } from "../models/AntiLink";
 
 export const handleAntiLink = (client: Client) => {
-    client.on('messageCreate', async (message: Message) => {
+    client.on("messageCreate", async (message: Message) => {
         if (!message.guild || message.author.bot || !message.channel.isTextBased()) return;
 
         const linkRegex = /https?:\/\/[^\s]+/g;
         if (!linkRegex.test(message.content)) return;
 
         try {
-            const antiLinkSettings = await AntiLink.findOne({ guildId: message.guild.id });
+            const antiLinkSettings = await AntiLink.findOne({
+                guildId: message.guild.id,
+            });
             if (!antiLinkSettings || !antiLinkSettings.isAntiLinkEnabled) return;
 
             if (!antiLinkSettings.allowedChannels.includes(message.channel.id)) {
@@ -27,7 +29,9 @@ export const handleAntiLink = (client: Client) => {
             }
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
-            console.error(`❌ Error handling anti-link for ${message.author.tag} in ${message.guild.name}: ${errorMessage}`);
+            console.error(
+                `❌ Error handling anti-link for ${message.author.tag} in ${message.guild.name}: ${errorMessage}`,
+            );
         }
     });
 };

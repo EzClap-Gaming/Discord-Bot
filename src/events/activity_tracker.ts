@@ -1,8 +1,8 @@
-import { Client, Message, VoiceState } from 'discord.js';
-import { Activity } from '../models/Activity';
+import { Client, Message, VoiceState } from "discord.js";
+import { Activity } from "../models/Activity";
 
 export const handleActivityTracker = (client: Client) => {
-    client.on('messageCreate', async (message: Message) => {
+    client.on("messageCreate", async (message: Message) => {
         if (message.author.bot || !message.guild) return;
 
         try {
@@ -12,7 +12,12 @@ export const handleActivityTracker = (client: Client) => {
             let activity = await Activity.findOne({ userId, guildId });
 
             if (!activity) {
-                activity = new Activity({ userId, guildId, messagesSent: 0, voiceTime: 0 });
+                activity = new Activity({
+                    userId,
+                    guildId,
+                    messagesSent: 0,
+                    voiceTime: 0,
+                });
             }
 
             activity.messagesSent += 1;
@@ -22,7 +27,7 @@ export const handleActivityTracker = (client: Client) => {
         }
     });
 
-    client.on('voiceStateUpdate', async (oldState: VoiceState, newState: VoiceState) => {
+    client.on("voiceStateUpdate", async (oldState: VoiceState, newState: VoiceState) => {
         if (!newState.guild) return;
 
         const userId = newState.id;
@@ -31,7 +36,12 @@ export const handleActivityTracker = (client: Client) => {
         let activity = await Activity.findOne({ userId, guildId });
 
         if (!activity) {
-            activity = new Activity({ userId, guildId, messagesSent: 0, voiceTime: 0 });
+            activity = new Activity({
+                userId,
+                guildId,
+                messagesSent: 0,
+                voiceTime: 0,
+            });
         }
 
         if (!oldState.channelId && newState.channelId) {

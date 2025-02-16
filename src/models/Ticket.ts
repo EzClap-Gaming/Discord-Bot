@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface ITicketsSchema extends Document {
     guildId: string;
@@ -12,14 +12,17 @@ export interface ITicketsSchema extends Document {
     updatedAt: Date;
 }
 
-const ticketsSchema = new Schema({
-    guildId: { type: String, required: true },
-    category: { type: String, required: true },
-    channel: { type: String, required: true },
-    role: { type: String, required: true },
-    advisorRole: { type: String, required: false },
-    logsId: { type: String, required: true },
-    ownerId: { type: String },
-}, { timestamps: true });
+const ticketsSchema = new Schema(
+    {
+        guildId: { type: String, required: true },
+        category: { type: String, required: true },
+        channel: { type: String, required: true },
+        role: { type: String, required: true },
+        advisorRole: { type: String, required: false },
+        logsId: { type: String, required: true },
+        ownerId: { type: String },
+    },
+    { timestamps: true },
+);
 
-export const Tickets = mongoose.model<ITicketsSchema>('Tickets', ticketsSchema);
+export const Tickets = mongoose.model<ITicketsSchema>("Tickets", ticketsSchema);

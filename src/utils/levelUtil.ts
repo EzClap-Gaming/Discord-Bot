@@ -34,7 +34,7 @@ export class LevelUtil {
         return {
             level,
             xp: userData.xp,
-            nextLevelXp
+            nextLevelXp,
         };
     }
 
@@ -68,15 +68,13 @@ export class LevelUtil {
      * @returns An array of the top 10 users, sorted by level and XP.
      */
     static async getLeaderboardData() {
-        const leaderboard = await Level.find()
-            .sort({ level: -1, xp: -1 })
-            .limit(10);
+        const leaderboard = await Level.find().sort({ level: -1, xp: -1 }).limit(10);
 
-        return leaderboard.map(user => ({
+        return leaderboard.map((user) => ({
             userId: user.userId,
             level: user.level,
             xp: user.xp,
-            username: user.userId // You could return the username here instead of the userId
+            username: user.userId, // You could return the username here instead of the userId
         }));
     }
 }

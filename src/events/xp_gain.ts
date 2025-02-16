@@ -3,7 +3,7 @@ import { LevelUtil } from "../utils/levelUtil";
 import { Level } from "../models/Level";
 
 export const handleXPListener = (client: Client) => {
-    client.on('messageCreate', async (message: Message) => {
+    client.on("messageCreate", async (message: Message) => {
         if (message.author.bot) return;
 
         try {
@@ -29,14 +29,14 @@ export const handleXPListener = (client: Client) => {
 
             if (Math.random() < 0.1) {
                 const embed = new EmbedBuilder()
-                    .setColor('#4CAF50')
-                    .setTitle('🎉 **XP Earned!** 🎉')
+                    .setColor("#4CAF50")
+                    .setTitle("🎉 **XP Earned!** 🎉")
                     .setDescription(
                         `💪 **Du hast** **${xpEarned}** XP verdient! 🎯\n\n` +
-                        `Weiter so, chatte mehr und levele auf! 🚀\n\n` +
-                        `Level up und schalte neue Funktionen frei! 🔓`
+                            `Weiter so, chatte mehr und levele auf! 🚀\n\n` +
+                            `Level up und schalte neue Funktionen frei! 🔓`,
                     )
-                    .setFooter({ text: 'Mach weiter und level auf! 🏅' })
+                    .setFooter({ text: "Mach weiter und level auf! 🏅" })
                     .setTimestamp();
 
                 const replyMessage = await message.reply({

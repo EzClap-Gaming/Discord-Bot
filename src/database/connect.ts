@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'; // Importing mongoose for database connection
+import mongoose from "mongoose"; // Importing mongoose for database connection
 
 // Function to connect to MongoDB
 export const connectDB = async () => {
@@ -13,7 +13,7 @@ export const connectDB = async () => {
 
         // Attempt to connect to MongoDB using the provided URI
         const conn = await mongoose.connect(mongoURI);
-        
+
         // Log a success message with the host of the connected database
         console.info(`[DATABASE] MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
@@ -23,7 +23,7 @@ export const connectDB = async () => {
             console.error(`[DATABASE] Error: ${error.message}`);
         } else {
             // Log a generic error message for unknown errors
-            console.error('[DATABASE] An unknown error occurred');
+            console.error("[DATABASE] An unknown error occurred");
         }
         // Exit the process with a failure code
         process.exit(1);

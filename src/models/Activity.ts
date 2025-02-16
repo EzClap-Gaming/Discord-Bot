@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import { UuidUtil } from '../utils/uuidUtil';
+import mongoose, { Schema, Document } from "mongoose";
+import { UuidUtil } from "../utils/uuidUtil";
 
 export interface IActivity extends Document {
     id: string;
@@ -12,13 +12,16 @@ export interface IActivity extends Document {
     updatedAt: Date;
 }
 
-const activitySchema: Schema = new Schema<IActivity>({
-    id: { type: String, default: () => UuidUtil.generateId() },
-    userId: { type: String, required: true },
-    guildId: { type: String, required: true },
-    messagesSent: { type: Number, default: 0 },
-    voiceTime: { type: Number, default: 0 },
-    lastJoinTimestamp: { type: Number, default: null },
-}, { timestamps: true });
+const activitySchema: Schema = new Schema<IActivity>(
+    {
+        id: { type: String, default: () => UuidUtil.generateId() },
+        userId: { type: String, required: true },
+        guildId: { type: String, required: true },
+        messagesSent: { type: Number, default: 0 },
+        voiceTime: { type: Number, default: 0 },
+        lastJoinTimestamp: { type: Number, default: null },
+    },
+    { timestamps: true },
+);
 
-export const Activity = mongoose.model<IActivity>('Activity', activitySchema);
+export const Activity = mongoose.model<IActivity>("Activity", activitySchema);

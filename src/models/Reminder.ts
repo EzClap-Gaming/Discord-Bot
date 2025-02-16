@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { UuidUtil } from '../utils/uuidUtil';
+import mongoose, { Document, Schema } from "mongoose";
+import { UuidUtil } from "../utils/uuidUtil";
 
 interface IReminder extends Document {
     id: string;
@@ -10,11 +10,14 @@ interface IReminder extends Document {
     updatedAt: Date;
 }
 
-const reminderSchema: Schema = new Schema<IReminder>({
-    id: { type: String, default: () => UuidUtil.generateId() },
-    userId: { type: String, required: true },
-    message: { type: String, required: true },
-    time: { type: Number, required: true },
-}, { timestamps: true });
+const reminderSchema: Schema = new Schema<IReminder>(
+    {
+        id: { type: String, default: () => UuidUtil.generateId() },
+        userId: { type: String, required: true },
+        message: { type: String, required: true },
+        time: { type: Number, required: true },
+    },
+    { timestamps: true },
+);
 
-export const ReminderModel = mongoose.model<IReminder>('Reminder', reminderSchema);
+export const ReminderModel = mongoose.model<IReminder>("Reminder", reminderSchema);

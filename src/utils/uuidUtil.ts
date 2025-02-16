@@ -1,4 +1,4 @@
-import { v4 as uuidv4, v1 as uuidv1, v5 as uuidv5 } from 'uuid';
+import { v4 as uuidv4, v1 as uuidv1, v5 as uuidv5 } from "uuid";
 
 /**
  * A utility class for generating, validating, and managing unique identifiers (UUIDs).
@@ -29,7 +29,10 @@ export class UuidUtil {
      * @param namespace The namespace for the UUID (optional, default is DNS).
      * @returns A string representing a UUID v5.
      */
-    static generateNamespaceId(name: string, namespace: string = '6ba7b810-9dad-11d1-80b4-00c04fd430c8'): string {
+    static generateNamespaceId(
+        name: string,
+        namespace: string = "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+    ): string {
         return uuidv5(name, namespace); // Generates UUID v5 using the namespace
     }
 
@@ -39,8 +42,7 @@ export class UuidUtil {
      * @returns True if the string is a valid UUID, otherwise false.
      */
     static isValidId(id: string): boolean {
-        const uuidRegex =
-            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
         return uuidRegex.test(id);
     }
 
@@ -51,7 +53,7 @@ export class UuidUtil {
      */
     static cleanId(id: string): string | null {
         if (!this.isValidId(id)) return null;
-        return id.replace(/-/g, ''); // Removes all dashes from the UUID.
+        return id.replace(/-/g, ""); // Removes all dashes from the UUID.
     }
 
     /**
@@ -62,7 +64,7 @@ export class UuidUtil {
      */
     static restoreId(cleanedId: string): string | null {
         if (cleanedId.length !== 32) return null; // UUID should have 32 characters
-        return cleanedId.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
+        return cleanedId.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
     }
 
     /**
@@ -73,7 +75,7 @@ export class UuidUtil {
      */
     static generateBatch(count: number): string[] {
         if (count <= 0) {
-            throw new Error('Count must be greater than 0.');
+            throw new Error("Count must be greater than 0.");
         }
         return Array.from({ length: count }, () => this.generateId());
     }
