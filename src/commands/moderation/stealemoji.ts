@@ -9,7 +9,7 @@ import axios from "axios";
 
 const StealEmojiCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName("stealemoji")
+        .setName("steal-emoji")
         .setDescription("Stehlen Sie ein Emoji von einem anderen Server.")
         .addStringOption((option) =>
             option

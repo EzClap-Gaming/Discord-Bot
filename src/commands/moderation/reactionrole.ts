@@ -13,7 +13,7 @@ import { Command } from "../../functions/handleCommands";
 
 const ReactionRoleCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName("reactionrole")
+        .setName("reaction-role")
         .setDescription("Reaktionsrollen erstellen und verwalten.")
         .addSubcommand((subcommand) =>
             subcommand
