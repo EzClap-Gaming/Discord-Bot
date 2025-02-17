@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-interface ILockdown extends Document {
+export interface ILockdown extends Document {
     id: string;
     channelId: string;
     duration: number; // Duration in minutes (0 for permanent lock)

@@ -19,6 +19,8 @@ import { reputationEmitter } from "./utils/reputationEmitter";
 import { handleReadyEvent } from "./events/ready";
 import { handleActivityTracker } from "./events/activity_tracker";
 import { handleWelcomeEvent } from "./events/welcome_message";
+import { handleGiveawayReaction } from "./events/giveaway_reaction";
+import { startReleaseCheck } from "./events/release_track";
 
 dotenv.config();
 
@@ -54,9 +56,7 @@ for (const folder of commandFolders) {
                 console.info(`Loading Command: ${file}`);
 
                 if (!command?.data?.name) {
-                    console.error(
-                        `Command in file ${file} is missing a 'data.name' property.`,
-                    );
+                    console.error(`Command in file ${file} is missing a 'data.name' property.`);
                     return;
                 }
 
@@ -72,22 +72,14 @@ client.once("ready", async () => {
         console.info(`${client.user?.tag} is started.`);
 
         await registerCommands();
+
+        // Starte den Release-Check, wenn der Bot bereit ist
+        startReleaseCheck(client);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error(`Error connecting to MongoDB: ${errorMessage}`);
     }
 });
-
-handleReadyEvent(client);
-handleAntiLink(client);
-handleActivityTracker(client);
-handleXPListener(client);
-handleWelcomeEvent(client);
-
-handleCreateTicketButton(client);
-handleClaimTicketButton(client);
-handleCloseTicketButton(client);
-handleReactionButtonInteraction(client);
 
 client.on("interactionCreate", async (interaction: Interaction) => {
     if (interaction.isChatInputCommand()) {
@@ -107,5 +99,17 @@ client.on("interactionCreate", async (interaction: Interaction) => {
 client.on("messageCreate", async (message) => {
     reputationEmitter.emit("message", message.author.id, message.content);
 });
+
+handleReadyEvent(client);
+handleAntiLink(client);
+handleActivityTracker(client);
+handleXPListener(client);
+handleWelcomeEvent(client);
+
+handleGiveawayReaction(client);
+handleCreateTicketButton(client);
+handleClaimTicketButton(client);
+handleCloseTicketButton(client);
+handleReactionButtonInteraction(client);
 
 client.login(process.env.TOKEN);

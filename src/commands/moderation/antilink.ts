@@ -10,46 +10,50 @@ import { AntiLink } from "../../models/AntiLink";
 const AntiLinkCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("antilink")
-        .setDescription("Manage the anti-link feature in this server.")
+        .setDescription("Verwalten Sie die Anti-Link-Funktion auf diesem Server.")
         .addSubcommand((subcommand) =>
-            subcommand.setName("enable").setDescription("Enable the anti-link protection."),
+            subcommand.setName("enable").setDescription("Aktivieren Sie den Anti-Link-Schutz."),
         )
         .addSubcommand((subcommand) =>
-            subcommand.setName("disable").setDescription("Disable the anti-link protection."),
+            subcommand.setName("disable").setDescription("Deaktivieren Sie den Anti-Link-Schutz."),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("allowed-channels-add")
-                .setDescription("Add a channel to allowed channels for anti-link protection.")
+                .setDescription(
+                    "Fügen Sie zum Schutz vor Links einen Kanal zu den zulässigen Kanälen hinzu.",
+                )
                 .addStringOption((option) =>
                     option
                         .setName("channel")
-                        .setDescription("Channel ID to add.")
+                        .setDescription("Hinzufügende Kanal-ID.")
                         .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("allowed-channels-remove")
-                .setDescription("Remove a channel from allowed channels for anti-link protection.")
+                .setDescription(
+                    "Entfernen Sie zum Schutz vor Links einen Kanal aus den zulässigen Kanälen.",
+                )
                 .addStringOption((option) =>
                     option
                         .setName("channel")
-                        .setDescription("Channel ID to remove.")
+                        .setDescription("Zu entfernende Kanal-ID.")
                         .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("allowed-channels-view")
-                .setDescription("View all allowed channels for anti-link protection."),
+                .setDescription("Zeigen Sie alle zulässigen Kanäle zum Anti-Link-Schutz an."),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             await interaction.reply({
-                content: `This command can only be used in a server.`,
+                content: `Dieser Befehl kann nur auf einem Server verwendet werden.`,
                 ephemeral: true,
             });
             return;
@@ -71,7 +75,7 @@ const AntiLinkCommand: Command = {
                     antiLink = await AntiLink.create({ guildId: interaction.guild.id });
                 } else {
                     await interaction.reply({
-                        content: `Anti-Link protection is not set up yet. Please enable it first!`,
+                        content: `Der Anti-Link-Schutz ist noch nicht eingerichtet. Bitte aktivieren Sie ihn zuerst!`,
                         ephemeral: true,
                     });
                     return;
@@ -82,7 +86,7 @@ const AntiLinkCommand: Command = {
                 case "enable":
                     if (antiLink.isAntiLinkEnabled) {
                         await interaction.reply({
-                            content: `Anti-Link protection is already enabled.`,
+                            content: `Der Anti-Link-Schutz ist bereits aktiviert.`,
                             ephemeral: true,
                         });
                         return;
@@ -91,7 +95,7 @@ const AntiLinkCommand: Command = {
                     antiLink.isAntiLinkEnabled = true;
                     await antiLink.save();
                     await interaction.reply({
-                        content: `Anti-Link protection is now enabled.`,
+                        content: `Der Anti-Link-Schutz ist jetzt aktiviert.`,
                         ephemeral: true,
                     });
                     break;
@@ -99,7 +103,7 @@ const AntiLinkCommand: Command = {
                 case "disable":
                     if (!antiLink.isAntiLinkEnabled) {
                         await interaction.reply({
-                            content: `Anti-Link protection is already disabled.`,
+                            content: `Der Anti-Link-Schutz ist bereits deaktiviert.`,
                             ephemeral: true,
                         });
                         return;
@@ -108,7 +112,7 @@ const AntiLinkCommand: Command = {
                     antiLink.isAntiLinkEnabled = false;
                     await antiLink.save();
                     await interaction.reply({
-                        content: `Anti-Link protection is now disabled.`,
+                        content: `Der Anti-Link-Schutz ist jetzt deaktiviert.`,
                         ephemeral: true,
                     });
                     break;
@@ -116,7 +120,7 @@ const AntiLinkCommand: Command = {
                 case "allowed-channels-add":
                     if (!channelId) {
                         await interaction.reply({
-                            content: `You must provide a channel ID.`,
+                            content: `Sie müssen eine Kanal-ID angeben.`,
                             ephemeral: true,
                         });
                         return;
@@ -127,12 +131,12 @@ const AntiLinkCommand: Command = {
                     if (indexAdd === -1) {
                         antiLink.allowedChannels.push(channelId);
                         await interaction.reply({
-                            content: `Channel ID <#${channelId}> has been added to allowed channels.`,
+                            content: `Die Kanal-ID <#${channelId}> wurde zu den zulässigen Kanälen hinzugefügt.`,
                             ephemeral: true,
                         });
                     } else {
                         await interaction.reply({
-                            content: `Channel ID <#${channelId}> is already in allowed channels.`,
+                            content: `Die Kanal-ID <#${channelId}> befindet sich bereits in den zulässigen Kanälen.`,
                             ephemeral: true,
                         });
                     }
@@ -142,7 +146,7 @@ const AntiLinkCommand: Command = {
                 case "allowed-channels-remove":
                     if (!channelId) {
                         await interaction.reply({
-                            content: `You must provide a channel ID.`,
+                            content: `Sie müssen eine Kanal-ID angeben.`,
                             ephemeral: true,
                         });
                         return;
@@ -153,12 +157,12 @@ const AntiLinkCommand: Command = {
                     if (indexRemove !== -1) {
                         antiLink.allowedChannels.splice(indexRemove, 1);
                         await interaction.reply({
-                            content: `Channel ID <#${channelId}> has been removed from allowed channels.`,
+                            content: `Die Kanal-ID <#${channelId}> wurde aus den zulässigen Kanälen entfernt.`,
                             ephemeral: true,
                         });
                     } else {
                         await interaction.reply({
-                            content: `Channel ID <#${channelId}> is not in allowed channels.`,
+                            content: `Die Kanal-ID <#${channelId}> befindet sich nicht in den zulässigen Kanälen.`,
                             ephemeral: true,
                         });
                     }
@@ -168,11 +172,11 @@ const AntiLinkCommand: Command = {
                 case "allowed-channels-view":
                     const allowedChannels = antiLink.allowedChannels.length
                         ? antiLink.allowedChannels.join(", ")
-                        : "None";
+                        : "Keiner";
 
                     const embed = new EmbedBuilder()
                         .setColor("Random")
-                        .setTitle("Allowed Channels")
+                        .setTitle("Erlaubte Kanäle")
                         .setDescription(allowedChannels);
 
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -180,14 +184,14 @@ const AntiLinkCommand: Command = {
 
                 default:
                     await interaction.reply({
-                        content: `Invalid subcommand.`,
+                        content: `Ungültiger Unterbefehl.`,
                         ephemeral: true,
                     });
             }
         } catch (error) {
-            console.error(`[Discord] Error executing command ${commandName}: `, error);
+            console.error(`Error executing command ${commandName}: `, error);
             await interaction.reply({
-                content: `There was an error while executing this command!`,
+                content: `Beim Ausführen dieses Befehls ist ein Fehler aufgetreten!`,
                 ephemeral: true,
             });
         }

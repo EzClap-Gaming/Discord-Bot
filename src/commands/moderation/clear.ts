@@ -10,18 +10,16 @@ import { Command } from "../../functions/handleCommands";
 const ClearCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("clear")
-        .setDescription(
-            "Clears commands or messages. Can only be used by users with moderation permissions.",
-        )
+        .setDescription("Löscht Befehle oder Nachrichten.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("commands")
-                .setDescription("Clears all bot commands.")
+                .setDescription("Löscht alle Bot-Befehle.")
                 .addStringOption((option) =>
                     option
                         .setName("amount")
                         .setDescription(
-                            'Specify the number of commands to delete or type "all" to clear all.',
+                            "Geben Sie die Anzahl der zu löschenden Befehle an oder geben Sie „all“ ein, um alle zu löschen.",
                         )
                         .setRequired(false)
                         .addChoices({ name: "All", value: "all" }),
@@ -30,12 +28,12 @@ const ClearCommand: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("messages")
-                .setDescription("Clears a specified number of messages in the current channel.")
+                .setDescription("Löscht eine angegebene Anzahl von Nachrichten im aktuellen Kanal.")
                 .addStringOption((option) =>
                     option
                         .setName("amount")
                         .setDescription(
-                            'Specify the number of messages to delete or type "all" to clear all.',
+                            "Geben Sie die Anzahl der zu löschenden Nachrichten an oder geben Sie „alle“ ein, um alle zu löschen.",
                         )
                         .setRequired(false)
                         .addChoices({ name: "All", value: "all" }),
@@ -48,10 +46,10 @@ const ClearCommand: Command = {
             if (subcommand === "commands") {
                 if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Permission Denied")
+                        .setColor("Random")
+                        .setTitle("Zugriff verweigert")
                         .setDescription(
-                            "You do not have the required permissions to clear commands.",
+                            "Sie verfügen nicht über die erforderlichen Berechtigungen zum Löschen von Befehlen.",
                         )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -64,16 +62,16 @@ const ClearCommand: Command = {
                     // Clear all commands
                     await interaction.client.application?.commands.set([]);
                     const embed = new EmbedBuilder()
-                        .setColor("#00FF00")
-                        .setTitle("Commands Cleared")
-                        .setDescription("All commands have been cleared successfully.")
+                        .setColor("Random")
+                        .setTitle("Gelöschte Befehle")
+                        .setDescription("Alle Befehle wurden erfolgreich gelöscht.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                 } else {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Invalid Input")
-                        .setDescription('Please specify "all" to clear all commands.')
+                        .setColor("Random")
+                        .setTitle("Ungültige Eingabe")
+                        .setDescription("Bitte geben Sie „alle“ an, um alle Befehle zu löschen.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                 }
@@ -82,9 +80,9 @@ const ClearCommand: Command = {
             if (subcommand === "messages") {
                 if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageMessages)) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Permission Denied")
-                        .setDescription("You do not have permission to delete messages.")
+                        .setColor("Random")
+                        .setTitle("Zugriff verweigert")
+                        .setDescription("Sie sind nicht berechtigt, Nachrichten zu löschen.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -99,24 +97,26 @@ const ClearCommand: Command = {
                         if (messages.size > 0) {
                             await channel.bulkDelete(messages, true);
                             const embed = new EmbedBuilder()
-                                .setColor("#00FF00")
-                                .setTitle("Messages Deleted")
-                                .setDescription(`All messages have been deleted.`)
+                                .setColor("Random")
+                                .setTitle("Gelöschte Nachrichten")
+                                .setDescription(`Alle Nachrichten wurden gelöscht.`)
                                 .setTimestamp();
                             await interaction.reply({ embeds: [embed], ephemeral: true });
                         } else {
                             const embed = new EmbedBuilder()
-                                .setColor("#FF0000")
-                                .setTitle("No Messages Found")
-                                .setDescription("No messages found to delete.")
+                                .setColor("Random")
+                                .setTitle("Keine Nachrichten gefunden")
+                                .setDescription("Keine zu löschenden Nachrichten gefunden.")
                                 .setTimestamp();
                             await interaction.reply({ embeds: [embed], ephemeral: true });
                         }
                     } else {
                         const embed = new EmbedBuilder()
-                            .setColor("#FF0000")
-                            .setTitle("Invalid Channel")
-                            .setDescription("This command can only be used in a text channel.")
+                            .setColor("Random")
+                            .setTitle("Ungültiger Kanal")
+                            .setDescription(
+                                "Dieser Befehl kann nur in einem Textkanal verwendet werden.",
+                            )
                             .setTimestamp();
                         await interaction.reply({ embeds: [embed], ephemeral: true });
                     }
@@ -129,36 +129,38 @@ const ClearCommand: Command = {
                         if (messages.size > 0) {
                             await channel.bulkDelete(messages, true);
                             const embed = new EmbedBuilder()
-                                .setColor("#00FF00")
-                                .setTitle("Messages Deleted")
-                                .setDescription(`${numAmount} messages have been deleted.`)
+                                .setColor("Random")
+                                .setTitle("Gelöschte Nachrichten")
+                                .setDescription(`${numAmount} Nachrichten wurden gelöscht.`)
                                 .setTimestamp();
                             await interaction.reply({ embeds: [embed], ephemeral: true });
                         } else {
                             const embed = new EmbedBuilder()
-                                .setColor("#FF0000")
-                                .setTitle("No Messages Found")
-                                .setDescription("No messages found to delete.")
+                                .setColor("Random")
+                                .setTitle("Keine Nachrichten gefunden")
+                                .setDescription("Keine zu löschenden Nachrichten gefunden.")
                                 .setTimestamp();
                             await interaction.reply({ embeds: [embed], ephemeral: true });
                         }
                     } else {
                         const embed = new EmbedBuilder()
-                            .setColor("#FF0000")
-                            .setTitle("Invalid Channel")
-                            .setDescription("This command can only be used in a text channel.")
+                            .setColor("Random")
+                            .setTitle("Ungültiger Kanal")
+                            .setDescription(
+                                "Dieser Befehl kann nur in einem Textkanal verwendet werden.",
+                            )
                             .setTimestamp();
                         await interaction.reply({ embeds: [embed], ephemeral: true });
                     }
                 }
             }
         } catch (error) {
-            console.error("[ClearCommand] Error:", error);
+            console.error("Error:", error);
             const embed = new EmbedBuilder()
-                .setColor("#FF0000")
+                .setColor("Random")
                 .setTitle("Error")
                 .setDescription(
-                    "An error occurred while processing the command. Please try again later.",
+                    "Beim Verarbeiten des Befehls ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                 )
                 .setTimestamp();
             await interaction.reply({ embeds: [embed], ephemeral: true });

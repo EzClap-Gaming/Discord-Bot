@@ -16,7 +16,6 @@ import LockdownCommand from "../commands/moderation/lockdown";
 import NicknameCommand from "../commands/moderation/nickname";
 import ClearCommand from "../commands/moderation/clear";
 import WarnCommand from "../commands/moderation/warn";
-import SurveyCommand from "../commands/moderation/survey";
 import AvatarCommand from "../commands/personal/avatar";
 import InviteCommand from "../commands/general/invite";
 import HelpCommand from "../commands/utility/help";
@@ -42,6 +41,9 @@ import GiveawayCommand from "../commands/moderation/giveaway";
 import ServerStatsCommand from "../commands/utility/serverstats";
 import QRCodeCommand from "../commands/utility/qrcode";
 import PDFCommand from "../commands/utility/pdf";
+import ActivityCommand from "../commands/general/activity";
+import ReportCommand from "../commands/moderation/report";
+import ReleaseCommand from "../commands/general/release";
 
 dotenv.config();
 
@@ -74,7 +76,6 @@ const commandFiles = [
     LockdownCommand,
     NicknameCommand,
     WarnCommand,
-    SurveyCommand,
     AvatarCommand,
     InviteCommand,
     HelpCommand,
@@ -100,6 +101,9 @@ const commandFiles = [
     ServerStatsCommand,
     QRCodeCommand,
     PDFCommand,
+    ActivityCommand,
+    ReportCommand,
+    ReleaseCommand,
 ];
 
 const commands: any[] = [];

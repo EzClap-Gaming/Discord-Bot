@@ -22,6 +22,24 @@ export const handleWelcomeEvent = (client: Client) => {
                 .setTimestamp();
 
             await channel.send({ embeds: [embed] });
+
+            try {
+                await member.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor("Random")
+                            .setTitle("Willkommen auf dem Server! 🎉")
+                            .setDescription(
+                                `Hallo ${member.user.username}, willkommen auf **${member.guild.name}**! 🎊\n\nViel Spaß und eine tolle Zeit hier! 😊`,
+                            )
+                            .setThumbnail(member.user.displayAvatarURL({ extension: "png" }))
+                            .setFooter({ text: "Wir freuen uns, dich hier zu haben!" })
+                            .setTimestamp(),
+                    ],
+                });
+            } catch (dmError) {
+                console.error("Could not send a direct message to the user:", dmError);
+            }
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error(`Error sending welcome message: ${errorMessage}`);

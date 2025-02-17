@@ -25,7 +25,7 @@ const ServerInfoCommand: Command = {
 
         const textChannels = guild.channels.cache.filter((channel) => channel.isTextBased()).size;
         const voiceChannels = guild.channels.cache.filter((channel) => channel.isVoiceBased()).size;
-        const boostCount = guild.premiumSubscriptionCount || (null as any);
+        const boostCount = guild.premiumSubscriptionCount ?? 0;
 
         const embed = new EmbedBuilder()
             .setColor("Random")
@@ -55,10 +55,9 @@ const ServerInfoCommand: Command = {
                 text: `Abgerufen von ${interaction.user.tag}`,
                 iconURL: interaction.user.displayAvatarURL(),
             })
-            .setTimestamp()
-            .setImage(iconUrl);
+            .setTimestamp();
 
-        await interaction.reply({ embeds: [embed], ephemeral: true });
+        await interaction.reply({ embeds: [embed] });
     },
 };
 

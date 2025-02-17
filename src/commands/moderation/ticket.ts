@@ -19,40 +19,42 @@ import { Tickets } from "../../models/Ticket";
 const TicketCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("ticket")
-        .setDescription("Setup the ticket system.")
+        .setDescription("Richten Sie das Ticketsystem ein.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("setup")
-                .setDescription("Setup the ticket system for this server.")
+                .setDescription("Richten Sie das Ticketsystem für diesen Server ein.")
                 .addChannelOption((option) =>
                     option
                         .setName("channel")
-                        .setDescription("The channel where the ticket panel will be sent.")
+                        .setDescription("Der Kanal, an den das Ticket-Panel gesendet wird.")
                         .setRequired(true),
                 )
                 .addChannelOption((option) =>
                     option
                         .setName("category")
-                        .setDescription("The category where tickets will be created.")
+                        .setDescription("Die Kategorie, in der Tickets erstellt werden.")
                         .addChannelTypes(ChannelType.GuildCategory)
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
                     option
                         .setName("role")
-                        .setDescription("The role that will be pinged when a ticket is created.")
+                        .setDescription(
+                            "Die Rolle, die angepingt wird, wenn ein Ticket erstellt wird.",
+                        )
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
                     option
                         .setName("advisorrole")
-                        .setDescription("The role that can claim and resolve tickets.")
+                        .setDescription("Die Rolle, die Tickets beanspruchen und lösen kann.")
                         .setRequired(true),
                 )
                 .addChannelOption((option) =>
                     option
                         .setName("logs")
-                        .setDescription("The channel where ticket transcripts will be sent.")
+                        .setDescription("Der Kanal, an den Tickettranskripte gesendet werden.")
                         .addChannelTypes(ChannelType.GuildText)
                         .setRequired(true),
                 ),
@@ -60,47 +62,47 @@ const TicketCommand: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("panel")
-                .setDescription("Send a custom ticket panel.")
+                .setDescription("Senden Sie ein benutzerdefiniertes Ticketfeld.")
                 .addStringOption((option) =>
                     option
                         .setName("embed_title")
-                        .setDescription("The title of the embed.")
+                        .setDescription("Der Titel des Embeds.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("embed_description")
-                        .setDescription("The description of the embed.")
+                        .setDescription("Die Beschreibung des eingebetteten Elements.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("embed_image")
-                        .setDescription("The URL of the image for the embed.")
+                        .setDescription("Die URL des Bildes für die Einbettung.")
                         .setRequired(false),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("embed_thumbnail")
-                        .setDescription("The label for the button.")
+                        .setDescription("Die Beschriftung für die Schaltfläche.")
                         .setRequired(false),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("button_text")
-                        .setDescription("The text on the button")
+                        .setDescription("Der Text auf der Schaltfläche")
                         .setRequired(false),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("button_emoji")
-                        .setDescription("The emoji for the button")
+                        .setDescription("Das Emoji für den Button")
                         .setRequired(false),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("button_color")
-                        .setDescription("The color of the button")
+                        .setDescription("Die Farbe des Knopfes")
                         .addChoices(
                             { name: "Primary", value: "Primary" },
                             { name: "Danger", value: "Danger" },
@@ -111,16 +113,16 @@ const TicketCommand: Command = {
                 ),
         )
         .addSubcommand((subcommand) =>
-            subcommand.setName("list").setDescription("Lists all open ticket channels."),
+            subcommand.setName("list").setDescription("Listet alle offenen Ticketkanäle auf."),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("delete")
-                .setDescription("Deletes a ticket message.")
+                .setDescription("Löscht ein Ticket.")
                 .addStringOption((option) =>
                     option
                         .setName("ticket_id")
-                        .setDescription("The message ID of the ticket to delete.")
+                        .setDescription("Die Nachrichten-ID des zu löschenden Tickets.")
                         .setRequired(true),
                 ),
         )
@@ -132,7 +134,7 @@ const TicketCommand: Command = {
         if (subcommand === "setup") {
             if (!interaction.guild) {
                 await interaction.reply({
-                    content: `This command can only be used in a server.`,
+                    content: `Dieser Befehl kann nur auf einem Server verwendet werden.`,
                     ephemeral: true,
                 });
                 return;
@@ -150,7 +152,7 @@ const TicketCommand: Command = {
 
                 if (existingTicket) {
                     await interaction.reply({
-                        content: `The ticket system is already setup for this server.`,
+                        content: `Das Ticketsystem ist für diesen Server bereits eingerichtet.`,
                         ephemeral: true,
                     });
                     return;
@@ -168,13 +170,13 @@ const TicketCommand: Command = {
                 await newTicketSettings.save();
 
                 await interaction.reply({
-                    content: `Ticket system has been set up!\n\n**Panel Channel**: ${ticketChannel}\n**Ticket Category**: ${ticketCategory.name}\n**Support Role**: ${ticketRole.name}\n**Advisor Role**: ${advisorRole.name}\n**Logs Channel**: ${logsChannel}`,
+                    content: `Ticketsystem wurde eingerichtet!\n\n**Panel-Kanal**: ${ticketChannel}\n**Ticketkategorie**: ${ticketCategory.name}\n**Supportrolle**: ${ticketRole.name}\n**Beraterrolle**: ${advisorRole.name}\n**Protokollkanal**: ${logsChannel}`,
                     ephemeral: true,
                 });
             } catch (error) {
-                console.error(`[Discord] Error setting up ticket system: `, error);
+                console.error(`Error setting up ticket system: `, error);
                 await interaction.reply({
-                    content: `There was an error setting up the ticket system. Please try again later.`,
+                    content: `Beim Einrichten des Ticketsystems ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.`,
                     ephemeral: true,
                 });
             }
@@ -187,7 +189,7 @@ const TicketCommand: Command = {
 
             if (!ticketSettings) {
                 await interaction.reply({
-                    content: `The ticket system is not setup for this server.`,
+                    content: `Das Ticketsystem ist für diesen Server nicht eingerichtet.`,
                     ephemeral: true,
                 });
                 return;
@@ -215,7 +217,7 @@ const TicketCommand: Command = {
             if (embedThumbnail) embed.setThumbnail(embedThumbnail);
 
             const button = new ButtonBuilder()
-                .setLabel(buttonText || "Create Ticket")
+                .setLabel(buttonText || "Ticket erstellen")
                 .setStyle(
                     ButtonStyle[buttonColor.toUpperCase() as keyof typeof ButtonStyle] ??
                         ButtonStyle.Primary,
@@ -237,7 +239,7 @@ const TicketCommand: Command = {
                     "Bot does not have permission to send messages in the ticket channel.",
                 );
                 await interaction.reply({
-                    content: `I don't have permission to send messages in the ticket channel.`,
+                    content: `Ich bin nicht berechtigt, Nachrichten im Ticketkanal zu senden.`,
                     ephemeral: true,
                 });
                 return;
@@ -247,13 +249,13 @@ const TicketCommand: Command = {
                 await interaction.deferReply({ ephemeral: true });
                 await ticketChannel.send({ embeds: [embed], components: [row] });
                 await interaction.followUp({
-                    content: `Ticket panel has been sent to ${ticketChannel}.`,
+                    content: `Das Ticket-Panel wurde an ${ticketChannel} gesendet.`,
                     ephemeral: true,
                 });
             } catch (error) {
-                console.error(`[Discord] Error sending ticket panel:`, error);
+                console.error(`Error sending ticket panel:`, error);
                 await interaction.followUp({
-                    content: `There was an error sending the ticket panel. Please try again later.`,
+                    content: `Beim Senden des Ticket-Panels ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.`,
                     ephemeral: true,
                 });
             }
@@ -265,7 +267,7 @@ const TicketCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Red")
                         .setTitle("Error")
-                        .setDescription("This command can only be used in a server.")
+                        .setDescription("Dieser Befehl kann nur auf einem Server verwendet werden.")
                         .setTimestamp();
 
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -280,7 +282,9 @@ const TicketCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Red")
                         .setTitle("Error")
-                        .setDescription("The ticket system is not set up for this server.")
+                        .setDescription(
+                            "Das Ticketsystem ist für diesen Server nicht eingerichtet.",
+                        )
                         .setTimestamp();
 
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -296,7 +300,7 @@ const TicketCommand: Command = {
                         .setColor("Red")
                         .setTitle("Error")
                         .setDescription(
-                            "Ticket category not found. Please check the configuration.",
+                            "Ticketkategorie nicht gefunden. Bitte überprüfen Sie die Konfiguration.",
                         )
                         .setTimestamp();
 
@@ -311,8 +315,8 @@ const TicketCommand: Command = {
                 if (ticketChannels.length === 0) {
                     const embed = new EmbedBuilder()
                         .setColor("Yellow")
-                        .setTitle("No Tickets Found")
-                        .setDescription("There are no ticket channels in the category.")
+                        .setTitle("Keine Tickets gefunden")
+                        .setDescription("In dieser Kategorie sind keine Ticketkanäle vorhanden.")
                         .setTimestamp();
 
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -327,29 +331,30 @@ const TicketCommand: Command = {
 
                     const embedMessage = messages.find((msg) => msg.embeds.length > 0);
                     if (embedMessage) {
-                        const embedTitle = embedMessage.embeds[0]?.title || "No Title";
-                        ticketList += `• ${embedTitle} (Message ID: ${embedMessage.id})\n`;
+                        const embedTitle = embedMessage.embeds[0]?.title || "Kein Titel";
+                        ticketList += `• ${embedTitle} (Nachricht ID: ${embedMessage.id})\n`;
                     }
 
                     ticketIdCounter++;
                 }
 
                 const embed = new EmbedBuilder()
-                    .setColor("Blue")
-                    .setTitle("Open Tickets")
+                    .setColor("Random")
+                    .setTitle("Offene Tickets")
                     .setDescription(
-                        ticketList || "No tickets with valid embeds found in the category.",
+                        ticketList ||
+                            "In der Kategorie wurden keine Tickets mit gültigen Einbettungen gefunden.",
                     )
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
             } catch (error) {
-                console.error("[Ticket List] Error fetching tickets:", error);
+                console.error("Error fetching tickets:", error);
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
                     .setDescription(
-                        "An error occurred while fetching the tickets. Please try again later.",
+                        "Beim Abrufen der Tickets ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
                     )
                     .setTimestamp();
 
@@ -365,7 +370,7 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("Please provide a valid ticket ID to delete.")
+                    .setDescription("Bitte geben Sie zum Löschen eine gültige Ticket-ID ein.")
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -376,7 +381,7 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("This command can only be used in a server.")
+                    .setDescription("Dieser Befehl kann nur auf einem Server verwendet werden.")
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -391,7 +396,7 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("The ticket system is not set up for this server.")
+                    .setDescription("Das Ticketsystem ist für diesen Server nicht eingerichtet.")
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -406,7 +411,9 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("Logs channel not found. Please contact an admin.")
+                    .setDescription(
+                        "Protokollkanal nicht gefunden. Bitte wenden Sie sich an einen Administrator.",
+                    )
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -419,7 +426,9 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("Ticket message not found. Please check the message ID.")
+                    .setDescription(
+                        "Ticketnachricht nicht gefunden. Bitte überprüfen Sie die Nachrichten-ID.",
+                    )
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -428,12 +437,12 @@ const TicketCommand: Command = {
 
             const confirmButton = new ButtonBuilder()
                 .setCustomId("confirmDelete")
-                .setLabel("Confirm Deletion")
+                .setLabel("Löschung bestätigen")
                 .setStyle(ButtonStyle.Danger);
 
             const cancelButton = new ButtonBuilder()
                 .setCustomId("cancelDelete")
-                .setLabel("Cancel")
+                .setLabel("Stornieren")
                 .setStyle(ButtonStyle.Secondary);
 
             const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -442,13 +451,13 @@ const TicketCommand: Command = {
             );
 
             const embed = new EmbedBuilder()
-                .setColor("#FFFF00")
-                .setTitle("Confirmation Required")
+                .setColor("Random")
+                .setTitle("Bestätigung erforderlich")
                 .setDescription(
-                    `Are you sure you want to delete the ticket with ID **${ticketId}**?`,
+                    `Möchten Sie das Ticket mit der ID **${ticketId}** wirklich löschen?`,
                 )
                 .setFooter({
-                    text: `Executed by ${interaction.user.username}`,
+                    text: `Ausgeführt von ${interaction.user.username}`,
                     iconURL: interaction.user.displayAvatarURL(),
                 })
                 .setTimestamp();
@@ -474,13 +483,13 @@ const TicketCommand: Command = {
                             await ticketMessage.delete();
 
                             const successEmbed = new EmbedBuilder()
-                                .setColor("#00FF00")
-                                .setTitle("Ticket Deleted")
+                                .setColor("Random")
+                                .setTitle("Ticket gelöscht")
                                 .setDescription(
-                                    `The ticket with ID **${ticketId}** has been successfully deleted. Reason: ${deleteReason}`,
+                                    `Das Ticket mit der ID **${ticketId}** wurde erfolgreich gelöscht. Grund: ${deleteReason}`,
                                 )
                                 .setFooter({
-                                    text: `Executed by ${interaction.user.username}`,
+                                    text: `Ausgeführt von ${interaction.user.username}`,
                                     iconURL: interaction.user.displayAvatarURL(),
                                 })
                                 .setTimestamp();
@@ -492,30 +501,30 @@ const TicketCommand: Command = {
                             );
                             if (logChannel && logChannel.isTextBased()) {
                                 const logEmbed = new EmbedBuilder()
-                                    .setColor("#FF0000")
-                                    .setTitle("Ticket Deleted")
+                                    .setColor("Random")
+                                    .setTitle("Ticket gelöscht")
                                     .addFields(
                                         { name: "Ticket ID", value: ticketId },
-                                        { name: "Deleted by", value: interaction.user.tag },
-                                        { name: "Reason", value: deleteReason },
+                                        { name: "Gelöscht von", value: interaction.user.tag },
+                                        { name: "Grund", value: deleteReason },
                                     )
                                     .setFooter({
-                                        text: `Ticket deleted at`,
+                                        text: `Ticket gelöscht am`,
                                         iconURL: interaction.user.displayAvatarURL(),
                                     })
                                     .setTimestamp();
                                 await logChannel.send({ embeds: [logEmbed] });
                             }
                         } catch (error) {
-                            console.error("[Ticket Delete] Error deleting the ticket:", error);
+                            console.error("Error deleting the ticket:", error);
                             const errorEmbed = new EmbedBuilder()
-                                .setColor("#FF0000")
+                                .setColor("Random")
                                 .setTitle("Error")
                                 .setDescription(
-                                    "An error occurred while deleting the ticket. Please try again later.",
+                                    "Beim Löschen des Tickets ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                                 )
                                 .setFooter({
-                                    text: `Executed by ${interaction.user.username}`,
+                                    text: `Ausgeführt von ${interaction.user.username}`,
                                     iconURL: interaction.user.displayAvatarURL(),
                                 })
                                 .setTimestamp();
@@ -523,11 +532,11 @@ const TicketCommand: Command = {
                         }
                     } else if (i.customId === "cancelDelete") {
                         const cancelEmbed = new EmbedBuilder()
-                            .setColor("#00FF00")
-                            .setTitle("Deletion Cancelled")
-                            .setDescription("The ticket deletion has been cancelled.")
+                            .setColor("Random")
+                            .setTitle("Löschung abgebrochen")
+                            .setDescription("Die Ticketlöschung wurde abgebrochen.")
                             .setFooter({
-                                text: `Executed by ${interaction.user.username}`,
+                                text: `Ausgeführt von ${interaction.user.username}`,
                                 iconURL: interaction.user.displayAvatarURL(),
                             })
                             .setTimestamp();
@@ -539,13 +548,13 @@ const TicketCommand: Command = {
                 collector.on("end", (collected) => {
                     if (collected.size === 0) {
                         const timeoutEmbed = new EmbedBuilder()
-                            .setColor("#FFA500")
-                            .setTitle("Timeout")
+                            .setColor("Random")
+                            .setTitle("Time-out")
                             .setDescription(
-                                "The ticket deletion was not confirmed and has been cancelled.",
+                                "Die Ticketlöschung wurde nicht bestätigt und abgebrochen.",
                             )
                             .setFooter({
-                                text: `Executed by ${interaction.user.username}`,
+                                text: `Ausgeführt von ${interaction.user.username}`,
                                 iconURL: interaction.user.displayAvatarURL(),
                             })
                             .setTimestamp();

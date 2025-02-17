@@ -6,62 +6,80 @@ import {
     EmbedBuilder,
 } from "discord.js";
 import { Command } from "../../functions/handleCommands";
+import { NicknameModel } from "../../models/Nickname";
 
 const NicknameCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("nickname")
-        .setDescription("Changes a member's nickname. This can only be used by moderators.")
+        .setDescription(
+            "Ändert den Spitznamen eines Mitglieds. Kann nur von Moderatoren verwendet werden.",
+        )
         .addUserOption((option) =>
             option
                 .setName("member")
-                .setDescription("The member whose nickname to change")
+                .setDescription("Das Mitglied, dessen Spitzname geändert werden soll")
                 .setRequired(true),
         )
         .addStringOption((option) =>
             option
                 .setName("nickname")
-                .setDescription("The new nickname for the member")
+                .setDescription("Der neue Spitzname für das Mitglied")
                 .setRequired(true),
         ),
     async execute(interaction: ChatInputCommandInteraction) {
         try {
             if (!interaction.memberPermissions?.has(PermissionFlagsBits.ChangeNickname)) {
                 const embed = new EmbedBuilder()
-                    .setColor("#FF0000")
-                    .setTitle("Permission Denied")
-                    .setDescription("You do not have permission to change nicknames.")
+                    .setColor("Random")
+                    .setTitle("Zugriff verweigert")
+                    .setDescription("Sie sind nicht berechtigt, Spitznamen zu ändern.")
                     .setTimestamp();
                 await interaction.reply({ embeds: [embed], ephemeral: true });
                 return;
             }
 
             const member = interaction.options.getMember("member") as GuildMember;
-            const nickname = interaction.options.getString("nickname")!;
+            const newNickname = interaction.options.getString("nickname")!;
 
             if (!member) {
                 const embed = new EmbedBuilder()
-                    .setColor("#FF0000")
-                    .setTitle("Member Not Found")
-                    .setDescription("Member not found!")
+                    .setColor("Random")
+                    .setTitle("Mitglied nicht gefunden")
+                    .setDescription("Das Mitglied konnte nicht gefunden werden!")
                     .setTimestamp();
                 await interaction.reply({ embeds: [embed], ephemeral: true });
                 return;
             }
 
-            await member.setNickname(nickname);
+            const oldNickname = member.nickname || member.user.username;
+
+            await member.setNickname(newNickname);
+
+            const newNicknameRecord = new NicknameModel({
+                guildId: interaction.guildId!,
+                memberId: member.id,
+                oldNickname: oldNickname,
+                newNickname: newNickname,
+                changedBy: interaction.user.id,
+            });
+
+            await newNicknameRecord.save();
+
             const embed = new EmbedBuilder()
-                .setColor("#00FF00")
-                .setTitle("Nickname Changed")
-                .setDescription(`${member.user.tag}'s nickname has been changed to ${nickname}.`)
+                .setColor("Random")
+                .setTitle("Spitzname geändert")
+                .setDescription(
+                    `Der Spitzname von ${member.user.tag} wurde in ${newNickname} geändert.`,
+                )
                 .setTimestamp();
             await interaction.reply({ embeds: [embed], ephemeral: true });
         } catch (error) {
-            console.error("[Nickname] Error changing nickname:", error);
+            console.error("Error changing nickname:", error);
             const embed = new EmbedBuilder()
-                .setColor("#FF0000")
+                .setColor("Random")
                 .setTitle("Error")
                 .setDescription(
-                    "An error occurred while changing the nickname. Please try again later.",
+                    "Beim Ändern des Spitznamens ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                 )
                 .setTimestamp();
             await interaction.reply({ embeds: [embed], ephemeral: true });

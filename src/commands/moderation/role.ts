@@ -10,40 +10,46 @@ import { Command } from "../../functions/handleCommands";
 const RoleCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("role")
-        .setDescription("Manage role from members.")
+        .setDescription("Rollen von Mitgliedern verwalten.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("give")
-                .setDescription("Give a role to a member.")
+                .setDescription("Weisen Sie einem Mitglied eine Rolle zu.")
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("The member to give the role to.")
+                        .setDescription("Das Mitglied, dem die Rolle zugewiesen werden soll.")
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
-                    option.setName("role").setDescription("The role to give.").setRequired(true),
+                    option
+                        .setName("role")
+                        .setDescription("Die zu vergebende Rolle.")
+                        .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("remove")
-                .setDescription("Remove a role from a member.")
+                .setDescription("Entfernen Sie eine Rolle von einem Mitglied.")
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("The member to remove the role from.")
+                        .setDescription("Das Mitglied, dem die Rolle entzogen werden soll.")
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
-                    option.setName("role").setDescription("The role to remove.").setRequired(true),
+                    option
+                        .setName("role")
+                        .setDescription("Die zu entfernende Rolle.")
+                        .setRequired(true),
                 ),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             await interaction.reply({
-                content: `This command can only be used in a server.`,
+                content: `Dieser Befehl kann nur auf einem Server verwendet werden.`,
                 ephemeral: true,
             });
             return;
@@ -55,7 +61,7 @@ const RoleCommand: Command = {
 
         if (!member || !role) {
             await interaction.reply({
-                content: `Member or role not found.`,
+                content: `Mitglied oder Rolle nicht gefunden.`,
                 ephemeral: true,
             });
             return;
@@ -68,7 +74,7 @@ const RoleCommand: Command = {
                 )
             ) {
                 await interaction.reply({
-                    content: `You do not have the required permissions to use this command.`,
+                    content: `Sie verfügen nicht über die erforderlichen Berechtigungen, um diesen Befehl zu verwenden.`,
                     ephemeral: true,
                 });
                 return;
@@ -76,7 +82,7 @@ const RoleCommand: Command = {
 
             if (role.position >= interaction.guild.members.me!.roles.highest.position) {
                 await interaction.reply({
-                    content: `I cannot give a role that is higher or equal to my highest role.`,
+                    content: `Ich kann keine Rolle vergeben, die höher oder gleich meiner höchsten Rolle ist.`,
                     ephemeral: true,
                 });
                 return;
@@ -85,13 +91,13 @@ const RoleCommand: Command = {
             try {
                 await member.roles.add(role);
                 await interaction.reply({
-                    content: `Role ${role.name} has been given to ${member.user.tag}.`,
+                    content: `Die Rolle ${role.name} wurde an ${member.user.tag} zugewiesen.`,
                     ephemeral: true,
                 });
             } catch (error) {
-                console.error(`[Discord] Error while executing the role command: `, error);
+                console.error(`Error while executing the role command: `, error);
                 await interaction.reply({
-                    content: `There was an error while executing this command!`,
+                    content: `Beim Ausführen dieses Befehls ist ein Fehler aufgetreten!`,
                     ephemeral: true,
                 });
             }
@@ -102,7 +108,7 @@ const RoleCommand: Command = {
                 )
             ) {
                 await interaction.reply({
-                    content: `You do not have the required permissions to use this command.`,
+                    content: `Sie verfügen nicht über die erforderlichen Berechtigungen, um diesen Befehl zu verwenden.`,
                     ephemeral: true,
                 });
                 return;
@@ -110,7 +116,7 @@ const RoleCommand: Command = {
 
             if (role.position >= (interaction.member as GuildMember).roles.highest.position) {
                 await interaction.reply({
-                    content: `You cannot remove a role that i higher or equal to your highest role.`,
+                    content: `Sie können keine Rolle entfernen, die höher oder gleich Ihrer höchsten Rolle ist.`,
                     ephemeral: true,
                 });
                 return;
@@ -118,7 +124,7 @@ const RoleCommand: Command = {
 
             if (role.position >= interaction.guild.members.me!.roles.highest.position) {
                 await interaction.reply({
-                    content: `I cannot remove a role that is higher or equal to my highest role.`,
+                    content: `Ich kann keine Rolle entfernen, die höher oder gleich meiner höchsten Rolle ist.`,
                     ephemeral: true,
                 });
                 return;
@@ -127,13 +133,13 @@ const RoleCommand: Command = {
             try {
                 await member.roles.remove(role);
                 await interaction.reply({
-                    content: `Role ${role.name} has been removed from ${member.user.tag}.`,
+                    content: `Rolle ${role.name} wurde von ${member.user.tag} entfernt.`,
                     ephemeral: true,
                 });
             } catch (error) {
-                console.error(`[Discord] Error while executing the role command: `, error);
+                console.error(`Error while executing the role command: `, error);
                 await interaction.reply({
-                    content: `There was an error while executing this command!`,
+                    content: `Beim Ausführen dieses Befehls ist ein Fehler aufgetreten!`,
                     ephemeral: true,
                 });
             }

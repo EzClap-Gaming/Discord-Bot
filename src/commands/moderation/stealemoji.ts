@@ -9,19 +9,19 @@ import axios from "axios";
 
 const StealEmojiCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName("stealemoji")
-        .setDescription("Steal an emoji from another server.")
+        .setName("steal-emoji")
+        .setDescription("Stehlen Sie ein Emoji von einem anderen Server.")
         .addStringOption((option) =>
             option
                 .setName("emoji")
-                .setDescription("The emoji you want to steal.")
+                .setDescription("Das Emoji, das Sie stehlen möchten.")
                 .setRequired(true),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuildExpressions),
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             await interaction.reply({
-                content: "This command can only be used in a server.",
+                content: "Dieser Befehl kann nur auf einem Server verwendet werden.",
                 ephemeral: true,
             });
             return;
@@ -29,7 +29,7 @@ const StealEmojiCommand: Command = {
 
         const emojiString = interaction.options.getString("emoji");
         if (!emojiString || !emojiString.startsWith("<") || !emojiString.endsWith(">")) {
-            await interaction.reply({ content: "Invalid Emoji.", ephemeral: true });
+            await interaction.reply({ content: "Ungültiges Emoji.", ephemeral: true });
             return;
         }
 
@@ -43,7 +43,8 @@ const StealEmojiCommand: Command = {
 
             if (!botMember.permissions.has(PermissionFlagsBits.ManageGuildExpressions)) {
                 await interaction.reply({
-                    content: "I do not have the required permissions to manage emojis.",
+                    content:
+                        "Ich verfüge nicht über die erforderlichen Berechtigungen zum Verwalten von Emojis.",
                     ephemeral: true,
                 });
                 return;
@@ -51,7 +52,8 @@ const StealEmojiCommand: Command = {
 
             if (!member.permissions.has(PermissionFlagsBits.ManageGuildExpressions)) {
                 await interaction.reply({
-                    content: "You do not have the required permissions to manage emojis.",
+                    content:
+                        "Sie verfügen nicht über die erforderlichen Berechtigungen zum Verwalten von Emojis.",
                     ephemeral: true,
                 });
                 return;
@@ -68,13 +70,13 @@ const StealEmojiCommand: Command = {
             });
 
             await interaction.reply({
-                content: `Emoji ${name} has been stolen and added to the server.`,
+                content: `Emoji ${name} wurde gestohlen und dem Server hinzugefügt.`,
                 ephemeral: true,
             });
         } catch (error) {
-            console.error(`[Discord] Error while stealing emoji: `, error);
+            console.error(`Error while stealing emoji: `, error);
             await interaction.reply({
-                content: "There was an error while stealing the emoji.",
+                content: "Beim Stehlen des Emojis ist ein Fehler aufgetreten.",
                 ephemeral: true,
             });
         }
