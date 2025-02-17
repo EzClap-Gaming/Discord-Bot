@@ -11,28 +11,28 @@ import { Lockdown } from "../../models/Lockdown";
 const LockdownCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("lockdown")
-        .setDescription("Manages the lockdown state of a text channel.")
+        .setDescription("Verwaltet den Sperrstatus eines Textkanals.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("add")
-                .setDescription("Locks the current text channel to prevent messages.")
+                .setDescription("Sperrt den aktuellen Textkanal, um Nachrichten zu verhindern.")
                 .addIntegerOption((option) =>
                     option
                         .setName("duration")
-                        .setDescription("Duration in minutes (optional, 0 for permanent lock)")
+                        .setDescription("Dauer in Minuten (optional, 0 für dauerhafte Sperre)")
                         .setRequired(false)
                         .setMinValue(0),
                 ),
         )
         .addSubcommand((subcommand) =>
-            subcommand.setName("remove").setDescription("Unlocks the current text channel."),
+            subcommand.setName("remove").setDescription("Schaltet den aktuellen Textkanal frei."),
         ),
     async execute(interaction: ChatInputCommandInteraction) {
         try {
             if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageChannels)) {
                 const noPermissionEmbed = new EmbedBuilder()
-                    .setColor("#FF0000")
-                    .setDescription("You do not have permission to lock down the channel.");
+                    .setColor("Random")
+                    .setDescription("Sie sind nicht berechtigt, den Kanal zu sperren.");
                 await interaction.reply({
                     embeds: [noPermissionEmbed],
                     ephemeral: true,
@@ -55,8 +55,8 @@ const LockdownCommand: Command = {
                     });
                     if (existingLockdown) {
                         const embed = new EmbedBuilder()
-                            .setColor("#FF0000")
-                            .setDescription("This channel is already locked down.");
+                            .setColor("Random")
+                            .setDescription("Dieser Kanal ist bereits gesperrt.");
                         await interaction.reply({ embeds: [embed], ephemeral: true });
                         return;
                     }
@@ -75,9 +75,9 @@ const LockdownCommand: Command = {
                     await lockdown.save();
 
                     const lockdownEmbed = new EmbedBuilder()
-                        .setColor("#FF0000")
+                        .setColor("Random")
                         .setDescription(
-                            `The channel has been locked down. It will be unlocked after ${duration} minutes.`,
+                            `Der Kanal wurde gesperrt. Er wird nach ${duration} Minuten entsperrt.`,
                         );
                     await interaction.reply({ embeds: [lockdownEmbed] });
 
@@ -88,8 +88,8 @@ const LockdownCommand: Command = {
                                 permissions.add(PermissionFlagsBits.SendMessages);
                             }
                             const unlockEmbed = new EmbedBuilder()
-                                .setColor("#00FF00")
-                                .setDescription("The channel has been unlocked.");
+                                .setColor("Random")
+                                .setDescription("Der Kanal wurde entsperrt.");
                             await interaction.followUp({ embeds: [unlockEmbed] });
                         }, duration * 60000);
                     }
@@ -102,8 +102,8 @@ const LockdownCommand: Command = {
                     });
                     if (!existingLockdown) {
                         const embed = new EmbedBuilder()
-                            .setColor("#FF0000")
-                            .setDescription("This channel is not locked down.");
+                            .setColor("Random")
+                            .setDescription("Dieser Kanal ist nicht gesperrt.");
                         await interaction.reply({ embeds: [embed], ephemeral: true });
                         return;
                     }
@@ -118,25 +118,25 @@ const LockdownCommand: Command = {
                     await Lockdown.deleteOne({ channelId: channel.id });
 
                     const unlockEmbed = new EmbedBuilder()
-                        .setColor("#00FF00")
-                        .setDescription("The channel has been unlocked.");
+                        .setColor("Random")
+                        .setDescription("Der Kanal wurde entsperrt.");
                     await interaction.reply({ embeds: [unlockEmbed] });
                 }
             } else {
                 const noTextChannelEmbed = new EmbedBuilder()
-                    .setColor("#FF0000")
-                    .setDescription("This command can only be used in text channels.");
+                    .setColor("Random")
+                    .setDescription("Dieser Befehl kann nur in Textkanälen verwendet werden.");
                 await interaction.reply({
                     embeds: [noTextChannelEmbed],
                     ephemeral: true,
                 });
             }
         } catch (error) {
-            console.error("[Lockdown] Error:", error);
+            console.error("Error:", error);
             const errorEmbed = new EmbedBuilder()
-                .setColor("#FF0000")
+                .setColor("Random")
                 .setDescription(
-                    "An error occurred while managing the channel lockdown. Please try again later.",
+                    "Beim Verwalten der Kanalsperre ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                 )
                 .setTimestamp();
             await interaction.reply({ embeds: [errorEmbed], ephemeral: true });

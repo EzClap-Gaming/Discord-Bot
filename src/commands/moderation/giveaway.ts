@@ -85,7 +85,7 @@ const GiveawayCommand: Command = {
                     .setDescription(
                         `${description}\n\nEndet am: ${endTime.toLocaleString()}\n\nReagiere mit 🎉, um teilzunehmen!`,
                     )
-                    .setColor("#FFD700");
+                    .setColor("Random");
 
                 const channel = interaction.channel as TextChannel;
                 const message = await channel.send({ embeds: [embed] });
@@ -99,7 +99,7 @@ const GiveawayCommand: Command = {
                     ephemeral: true,
                 });
             } catch (error) {
-                console.error("[Giveaway Create] Fehler:", error);
+                console.error("Fehler:", error);
                 await interaction.reply({
                     content: "⚠️ Fehler beim Erstellen des Giveaways.",
                     ephemeral: true,
@@ -126,7 +126,7 @@ const GiveawayCommand: Command = {
             const embed = new EmbedBuilder()
                 .setTitle(`🎉 Giveaway Beendet: ${giveaway.title}`)
                 .setDescription("Das Giveaway ist beendet. Die Gewinner werden bekannt gegeben.")
-                .setColor("#FF4500");
+                .setColor("Random");
 
             const channel = interaction.channel as TextChannel;
             await channel.send({ embeds: [embed] });
@@ -174,7 +174,7 @@ const GiveawayCommand: Command = {
                         .map((g) => `${g.title} - Endet am ${g.endsAt.toLocaleString()}`)
                         .join("\n"),
                 )
-                .setColor("#FFD700");
+                .setColor("Random");
 
             await interaction.reply({ embeds: [embed], ephemeral: true });
         }

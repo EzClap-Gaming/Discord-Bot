@@ -14,28 +14,28 @@ import { Command } from "../../functions/handleCommands";
 const ReactionRoleCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("reactionrole")
-        .setDescription("Create and manage reaction roles.")
+        .setDescription("Reaktionsrollen erstellen und verwalten.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("create")
-                .setDescription("Create a new reaction role message.")
+                .setDescription("Erstellen Sie eine neue Reaktionsrollennachricht.")
                 .addStringOption((option) =>
                     option
                         .setName("title")
-                        .setDescription("The title of the embed.")
+                        .setDescription("Der Titel des Embeds.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("description")
-                        .setDescription("The description of the embed.")
+                        .setDescription("Die Beschreibung des eingebetteten Elements.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("roles")
                         .setDescription(
-                            "Roles and emojis in the format: `emoji -> @Role` (separate multiple with commas).",
+                            "Rollen und Emojis im Format: „Emoji -> @Rolle“ (mehrere durch Kommas trennen).",
                         )
                         .setRequired(true),
                 ),
@@ -43,16 +43,16 @@ const ReactionRoleCommand: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("list")
-                .setDescription("List all reaction role messages in this server."),
+                .setDescription("Listet alle Reaktionsrollennachrichten auf diesem Server auf."),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("delete")
-                .setDescription("Delete a specific reaction role message.")
+                .setDescription("Löschen Sie eine bestimmte Reaktionsrollennachricht.")
                 .addStringOption((option) =>
                     option
                         .setName("message_id")
-                        .setDescription("The message ID of the reaction role to delete.")
+                        .setDescription("Die Nachrichten-ID der zu löschenden Reaktionsrolle.")
                         .setRequired(true),
                 ),
         ),
@@ -62,9 +62,9 @@ const ReactionRoleCommand: Command = {
 
         if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageRoles)) {
             const embed = new EmbedBuilder()
-                .setColor("#FF0000")
-                .setTitle("Permission Denied")
-                .setDescription("You do not have permission to manage reaction roles.")
+                .setColor("Random")
+                .setTitle("Zugriff verweigert")
+                .setDescription("Sie sind nicht berechtigt, Reaktionsrollen zu verwalten.")
                 .setTimestamp();
             await interaction.reply({ embeds: [embed], ephemeral: true });
             return;
@@ -76,7 +76,7 @@ const ReactionRoleCommand: Command = {
             const rolesInput = interaction.options.getString("roles", true);
 
             const embed = new EmbedBuilder()
-                .setColor("#00FF00")
+                .setColor("Random")
                 .setTitle(title)
                 .setDescription(description)
                 .setTimestamp();
@@ -91,7 +91,7 @@ const ReactionRoleCommand: Command = {
                 const [emoji, roleMention] = pair.split("->").map((str) => str.trim());
                 if (!emoji || !roleMention) {
                     await interaction.reply({
-                        content: "Invalid format. Use `emoji -> @Role` for each entry.",
+                        content: "Ungültiges Format. Verwenden Sie für jeden Eintrag „emoji -> @Rolle“.",
                     });
                     return;
                 }
@@ -102,7 +102,7 @@ const ReactionRoleCommand: Command = {
 
                 if (!role) {
                     await interaction.reply({
-                        content: `Role "${roleMention}" not found.`,
+                        content: `Rolle „${roleMention}“ nicht gefunden.`,
                     });
                     return;
                 }
@@ -129,7 +129,7 @@ const ReactionRoleCommand: Command = {
             const roleDescription = roles
                 .map(({ emoji, roleId }) => `${emoji} -> <@&${roleId}>`)
                 .join("\n");
-            embed.addFields({ name: "Assigned Roles", value: roleDescription });
+            embed.addFields({ name: "Zugewiesene Rollen", value: roleDescription });
 
             if (interaction.channel instanceof TextChannel) {
                 const message = await interaction.channel.send({
@@ -148,16 +148,16 @@ const ReactionRoleCommand: Command = {
                 await reactionRole.save();
 
                 const successEmbed = new EmbedBuilder()
-                    .setColor("#00FF00")
-                    .setTitle("Reaction Role Created")
-                    .setDescription("Reaction role message created and saved.")
+                    .setColor("Random")
+                    .setTitle("Reaktionsrolle erstellt")
+                    .setDescription("Reaktionsrollennachricht erstellt und gespeichert.")
                     .setTimestamp();
                 await interaction.reply({ embeds: [successEmbed], ephemeral: true });
             } else {
                 const errorEmbed = new EmbedBuilder()
-                    .setColor("#FF0000")
-                    .setTitle("Invalid Channel")
-                    .setDescription("Cannot send the message in the current channel.")
+                    .setColor("Random")
+                    .setTitle("Ungültiger Kanal")
+                    .setDescription("Die Nachricht kann im aktuellen Kanal nicht gesendet werden.")
                     .setTimestamp();
                 await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
             }

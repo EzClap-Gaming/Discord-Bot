@@ -11,66 +11,66 @@ import { Warn } from "../../models/Warn";
 const WarnCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("warn")
-        .setDescription("Manages warnings for members.")
+        .setDescription("Verwaltet Warnungen für Mitglieder.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("add")
-                .setDescription("Warns a member.")
+                .setDescription("Warnt ein Mitglied.")
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("The member to warn.")
+                        .setDescription("Das zu warnende Mitglied.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("reason")
-                        .setDescription("Reason for the warning.")
+                        .setDescription("Grund der Warnung.")
                         .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("remove")
-                .setDescription("Removes a specific warning from a member.")
+                .setDescription("Entfernt eine bestimmte Warnung von einem Mitglied.")
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("The member whose warning will be removed.")
+                        .setDescription("Das Mitglied, dessen Warnung entfernt wird.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("identifier")
-                        .setDescription("The warning number or text to remove.")
+                        .setDescription("Die zu entfernende Warnnummer oder der zu entfernende Warntext.")
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("removal-reason")
-                        .setDescription("Reason for removing the warning.")
+                        .setDescription("Grund für das Entfernen der Warnung.")
                         .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("list")
-                .setDescription("Lists all warnings for a member.")
+                .setDescription("Listet alle Warnungen für ein Mitglied auf.")
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("The member to list warnings for.")
+                        .setDescription("Das Mitglied, für das Warnungen aufgelistet werden sollen.")
                         .setRequired(true),
                 ),
         ),
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.memberPermissions?.has(PermissionFlagsBits.KickMembers)) {
             const embed = new EmbedBuilder()
-                .setColor("#FF0000")
-                .setTitle("Permission Denied")
-                .setDescription("You do not have permission to manage warnings.")
+                .setColor("Random")
+                .setTitle("Zugriff verweigert")
+                .setDescription("Sie sind nicht berechtigt, Warnungen zu verwalten.")
                 .setFooter({
-                    text: `Executed by ${interaction.user.username}`,
+                    text: `Ausgeführt von ${interaction.user.username}`,
                     iconURL: interaction.user.displayAvatarURL(),
                 })
                 .setTimestamp();
@@ -83,10 +83,10 @@ const WarnCommand: Command = {
 
         if (!member) {
             const embed = new EmbedBuilder()
-                .setColor("#FF0000")
-                .setDescription("Could not find the specified member.")
+                .setColor("Random")
+                .setDescription("Das angegebene Mitglied konnte nicht gefunden werden.")
                 .setFooter({
-                    text: `Executed by ${interaction.user.username}`,
+                    text: `Ausgeführt von ${interaction.user.username}`,
                     iconURL: interaction.user.displayAvatarURL(),
                 });
             await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -109,12 +109,12 @@ const WarnCommand: Command = {
                 await warning.save();
 
                 const embed = new EmbedBuilder()
-                    .setColor("#FFFF00")
-                    .setTitle("Member Warned")
-                    .setDescription(`${member.user.tag} has been warned.`)
-                    .addFields({ name: "Reason", value: reason })
+                    .setColor("Random")
+                    .setTitle("Mitglied gewarnt")
+                    .setDescription(`${member.user.tag} wurde gewarnt.`)
+                    .addFields({ name: "Grund", value: reason })
                     .setFooter({
-                        text: `Executed by ${interaction.user.username}`,
+                        text: `Ausgeführt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
@@ -122,25 +122,25 @@ const WarnCommand: Command = {
 
                 // Send a DM to the warned user
                 const dmEmbed = new EmbedBuilder()
-                    .setColor("#FFFF00")
-                    .setTitle("You have been warned!")
-                    .setDescription(`You have received a warning in the server. Reason: ${reason}`)
+                    .setColor("Random")
+                    .setTitle("Sie wurden gewarnt!")
+                    .setDescription(`Sie haben eine Warnung auf dem Server erhalten. Grund: ${reason}`)
                     .setFooter({
-                        text: `Issued by ${interaction.user.username}`,
+                        text: `Ausgestellt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
                 await member.send({ embeds: [dmEmbed] });
             } catch (error) {
-                console.error("[Warn Add] Error saving warning:", error);
+                console.error("Error saving warning:", error);
                 const embed = new EmbedBuilder()
-                    .setColor("#FF0000")
+                    .setColor("Random")
                     .setTitle("Error")
                     .setDescription(
-                        "An error occurred while adding the warning. Please try again later.",
+                        "Beim Hinzufügen der Warnung ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                     )
                     .setFooter({
-                        text: `Executed by ${interaction.user.username}`,
+                        text: `Ausgeführt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
@@ -160,12 +160,12 @@ const WarnCommand: Command = {
 
                 if (!warningToRemove) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
+                        .setColor("Random")
                         .setDescription(
-                            `No warning found for ${member.user.tag} with identifier: "${identifier}".`,
+                            `Für ${member.user.tag} mit dem Bezeichner „${identifier}“ wurde keine Warnung gefunden.`,
                         )
                         .setFooter({
-                            text: `Executed by ${interaction.user.username}`,
+                            text: `Ausgeführt von ${interaction.user.username}`,
                             iconURL: interaction.user.displayAvatarURL(),
                         });
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -175,14 +175,14 @@ const WarnCommand: Command = {
                 await Warn.findByIdAndDelete(warningToRemove._id);
 
                 const embed = new EmbedBuilder()
-                    .setColor("#00FF00")
-                    .setTitle("Warning Removed")
+                    .setColor("Random")
+                    .setTitle("Warnung entfernt")
                     .setDescription(
-                        `The following warning has been removed from ${member.user.tag}:`,
+                        `Die folgende Warnung wurde aus ${member.user.tag} entfernt:`,
                     )
-                    .addFields({ name: "Removed Warning", value: warningToRemove.reason })
+                    .addFields({ name: "Warnung entfernt", value: warningToRemove.reason })
                     .setFooter({
-                        text: `Executed by ${interaction.user.username}`,
+                        text: `Ausgeführt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
@@ -190,27 +190,27 @@ const WarnCommand: Command = {
 
                 // Send a DM to the user notifying the removal
                 const dmEmbed = new EmbedBuilder()
-                    .setColor("#00FF00")
-                    .setTitle("Your warning was removed")
+                    .setColor("Random")
+                    .setTitle("Ihre Warnung wurde entfernt")
                     .setDescription(
-                        `A warning has been removed from your record in the server. Removed Reason: ${removalReason}\nOriginal Warning: ${warningToRemove.reason}`,
+                        `Eine Warnung wurde aus Ihrem Datensatz auf dem Server entfernt. Grund für Entfernung: ${removalReason}\nUrsprüngliche Warnung: ${warningToRemove.reason}`,
                     )
                     .setFooter({
-                        text: `Removed by ${interaction.user.username}`,
+                        text: `Entfernt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
                 await member.send({ embeds: [dmEmbed] });
             } catch (error) {
-                console.error("[Warn Remove] Error removing warning:", error);
+                console.error("Error removing warning:", error);
                 const embed = new EmbedBuilder()
-                    .setColor("#FF0000")
+                    .setColor("Random")
                     .setTitle("Error")
                     .setDescription(
-                        "An error occurred while removing the warning. Please try again later.",
+                        "Beim Entfernen der Warnung ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                     )
                     .setFooter({
-                        text: `Executed by ${interaction.user.username}`,
+                        text: `Ausgeführt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
@@ -227,10 +227,10 @@ const WarnCommand: Command = {
 
                 if (warnings.length === 0) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setDescription(`${member.user.tag} has no warnings.`)
+                        .setColor("Random")
+                        .setDescription(`${member.user.tag} hat keine Warnungen.`)
                         .setFooter({
-                            text: `Executed by ${interaction.user.username}`,
+                            text: `Ausgeführt von ${interaction.user.username}`,
                             iconURL: interaction.user.displayAvatarURL(),
                         });
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -240,25 +240,25 @@ const WarnCommand: Command = {
                 const warningList = warnings.map((w) => `• ${w.reason} (ID: ${w._id})`).join("\n");
 
                 const embed = new EmbedBuilder()
-                    .setColor("#00FFFF")
-                    .setTitle(`Warnings for ${member.user.tag}`)
+                    .setColor("Random")
+                    .setTitle(`Warnungen für ${member.user.tag}`)
                     .setDescription(warningList)
                     .setFooter({
-                        text: `Executed by ${interaction.user.username}`,
+                        text: `Ausgeführt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
                 await interaction.reply({ embeds: [embed], ephemeral: true });
             } catch (error) {
-                console.error("[Warn List] Error fetching warnings:", error);
+                console.error("Error fetching warnings:", error);
                 const embed = new EmbedBuilder()
-                    .setColor("#FF0000")
+                    .setColor("Random")
                     .setTitle("Error")
                     .setDescription(
-                        "An error occurred while listing the warnings. Please try again later.",
+                        "Beim Auflisten der Warnungen ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                     )
                     .setFooter({
-                        text: `Executed by ${interaction.user.username}`,
+                        text: `Ausgeführt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();

@@ -10,16 +10,16 @@ import { Command } from "../../functions/handleCommands";
 const SlowmodeCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("slowmode")
-        .setDescription("Manages slowmode for the server.")
+        .setDescription("Verwaltet den Slowmode für den Server.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("add")
-                .setDescription("Sets the slowmode for the specified channel.")
+                .setDescription("Legt den Slowmode für den angegebenen Kanal fest.")
                 .addIntegerOption((option) =>
                     option
                         .setName("time")
                         .setDescription(
-                            "Time in seconds between messages (1-21600 seconds), set to 0 to disable slowmode.",
+                            "Zeit in Sekunden zwischen Nachrichten (1-21600 Sekunden), auf 0 setzen, um den Slowmode zu deaktivieren.",
                         )
                         .setRequired(true)
                         .setMinValue(0)
@@ -29,7 +29,7 @@ const SlowmodeCommand: Command = {
                     (option) =>
                         option
                             .setName("channel")
-                            .setDescription("The channel to set the slowmode for.")
+                            .setDescription("Der Kanal, für den der Slowmode eingestellt werden soll.")
                             .setRequired(true)
                             .addChannelTypes(0), // Only text channels
                 ),
@@ -37,12 +37,12 @@ const SlowmodeCommand: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("remove")
-                .setDescription("Removes the slowmode for the specified channel.")
+                .setDescription("Entfernt den Slowmode für den angegebenen Kanal.")
                 .addChannelOption(
                     (option) =>
                         option
                             .setName("channel")
-                            .setDescription("The channel to remove slowmode from.")
+                            .setDescription("Der Kanal, aus dem der Slowmode entfernt werden soll.")
                             .setRequired(true)
                             .addChannelTypes(0), // Only text channels
                 ),
@@ -51,8 +51,8 @@ const SlowmodeCommand: Command = {
         try {
             if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageChannels)) {
                 const noPermissionEmbed = new EmbedBuilder()
-                    .setColor("#FF0000")
-                    .setDescription("You do not have permission to change the slowmode.");
+                    .setColor("Random")
+                    .setDescription("Sie sind nicht berechtigt, den Slowmode zu ändern.");
                 await interaction.reply({
                     embeds: [noPermissionEmbed],
                     ephemeral: true,
@@ -69,13 +69,13 @@ const SlowmodeCommand: Command = {
                 if (channel instanceof TextChannel) {
                     await channel.setRateLimitPerUser(time);
                     const slowmodeEmbed = new EmbedBuilder()
-                        .setColor("#00FF00")
-                        .setDescription(`Slowmode has been set to ${time} seconds in ${channel}.`);
+                        .setColor("Random")
+                        .setDescription(`Der Slowmode wurde in ${channel} auf ${time} Sekunden eingestellt.`);
                     await interaction.reply({ embeds: [slowmodeEmbed], ephemeral: true });
                 } else {
                     const notTextChannelEmbed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setDescription("The specified channel is not a text channel.");
+                        .setColor("Random")
+                        .setDescription("Der angegebene Kanal ist kein Textkanal.");
                     await interaction.reply({
                         embeds: [notTextChannelEmbed],
                         ephemeral: true,
@@ -85,16 +85,16 @@ const SlowmodeCommand: Command = {
                 if (channel instanceof TextChannel) {
                     await channel.setRateLimitPerUser(0); // Disable slowmode
                     const removeSlowmodeEmbed = new EmbedBuilder()
-                        .setColor("#00FF00")
-                        .setDescription(`Slowmode has been removed from ${channel}.`);
+                        .setColor("Random")
+                        .setDescription(`Der Slowmode wurde aus ${channel} entfernt.`);
                     await interaction.reply({
                         embeds: [removeSlowmodeEmbed],
                         ephemeral: true,
                     });
                 } else {
                     const notTextChannelEmbed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setDescription("The specified channel is not a text channel.");
+                        .setColor("Random")
+                        .setDescription("Der angegebene Kanal ist kein Textkanal.");
                     await interaction.reply({
                         embeds: [notTextChannelEmbed],
                         ephemeral: true,
@@ -102,11 +102,11 @@ const SlowmodeCommand: Command = {
                 }
             }
         } catch (error) {
-            console.error("[Slowmode] Error setting or removing slowmode:", error);
+            console.error("Error setting or removing slowmode:", error);
             const errorEmbed = new EmbedBuilder()
-                .setColor("#FF0000")
+                .setColor("Random")
                 .setDescription(
-                    "An error occurred while setting or removing the slowmode. Please try again later.",
+                    "Beim Setzen oder Entfernen des Slowmode ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                 );
             await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
         }

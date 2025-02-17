@@ -12,34 +12,34 @@ import { Ban, IBan } from "../../models/Ban";
 const BanCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("ban")
-        .setDescription("Manage bans for a member in the server.")
+        .setDescription("Verwalten Sie Sperren für ein Mitglied auf dem Server.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("add")
-                .setDescription("Ban a member from the server.")
+                .setDescription("Ein Mitglied vom Server verbannen.")
                 .addUserOption((option) =>
-                    option.setName("member").setDescription("The member to ban").setRequired(true),
+                    option.setName("member").setDescription("Das zu verbannende Mitglied").setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
                         .setName("reason")
-                        .setDescription("Reason for the ban")
+                        .setDescription("Grund für das Verbot")
                         .setRequired(false),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("remove")
-                .setDescription("Remove a ban from a member.")
+                .setDescription("Heben Sie die Sperre eines Mitglieds auf.")
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("The member to unban")
+                        .setDescription("Das zu entsperrende Mitglied")
                         .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
-            subcommand.setName("list").setDescription("List all banned members."),
+            subcommand.setName("list").setDescription("Liste aller gesperrten Mitglieder."),
         ),
     async execute(interaction: ChatInputCommandInteraction) {
         try {
@@ -49,22 +49,22 @@ const BanCommand: Command = {
             if (subcommand === "add") {
                 if (!interaction.memberPermissions?.has(PermissionFlagsBits.BanMembers)) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Permission Denied")
-                        .setDescription("You do not have permission to ban members.")
+                        .setColor("Random")
+                        .setTitle("Zugriff verweigert")
+                        .setDescription("Sie sind nicht berechtigt, Mitglieder zu sperren.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
                 }
 
                 const member = interaction.options.getMember("member") as GuildMember;
-                const reason = interaction.options.getString("reason") || "No reason provided";
+                const reason = interaction.options.getString("reason") || "Kein Grund angegeben";
 
                 if (!member) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Member Not Found")
-                        .setDescription("Could not find the specified member.")
+                        .setColor("Random")
+                        .setTitle("Mitglied nicht gefunden")
+                        .setDescription("Das angegebene Mitglied konnte nicht gefunden werden.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -83,12 +83,12 @@ const BanCommand: Command = {
                 await member.ban({ reason });
 
                 const embed = new EmbedBuilder()
-                    .setColor("#00AAFF")
-                    .setTitle("Member Banned")
-                    .setDescription(`${member.user.tag} has been banned from the server.`)
+                    .setColor("Random")
+                    .setTitle("Mitglied gesperrt")
+                    .setDescription(`${member.user.tag} wurde vom Server verbannt.`)
                     .addFields({ name: "Reason", value: reason })
                     .setFooter({
-                        text: `Banned by ${interaction.user.username}`,
+                        text: `Gesperrt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
                     })
                     .setTimestamp();
@@ -100,9 +100,9 @@ const BanCommand: Command = {
             if (subcommand === "remove") {
                 if (!interaction.memberPermissions?.has(PermissionFlagsBits.BanMembers)) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Permission Denied")
-                        .setDescription("You do not have permission to unban members.")
+                        .setColor("Random")
+                        .setTitle("Zugriff verweigert")
+                        .setDescription("Sie sind nicht berechtigt, die Sperre von Mitgliedern aufzuheben.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -112,9 +112,9 @@ const BanCommand: Command = {
 
                 if (!user) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("User Not Found")
-                        .setDescription("Could not find the specified user.")
+                        .setColor("Random")
+                        .setTitle("Benutzer nicht gefunden")
+                        .setDescription("Der angegebene Benutzer konnte nicht gefunden werden.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -126,9 +126,9 @@ const BanCommand: Command = {
                 await Ban.deleteOne({ userId: user.id });
 
                 const embed = new EmbedBuilder()
-                    .setColor("#00AAFF")
-                    .setTitle("Member Unbanned")
-                    .setDescription(`${user.tag} has been unbanned from the server.`)
+                    .setColor("Random")
+                    .setTitle("Mitglied entsperrt")
+                    .setDescription(`Die Sperre für ${user.tag} wurde auf dem Server aufgehoben.`)
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -138,9 +138,9 @@ const BanCommand: Command = {
             if (subcommand === "list") {
                 if (!interaction.memberPermissions?.has(PermissionFlagsBits.BanMembers)) {
                     const embed = new EmbedBuilder()
-                        .setColor("#FF0000")
-                        .setTitle("Permission Denied")
-                        .setDescription("You do not have permission to view the banned users.")
+                        .setColor("Random")
+                        .setTitle("Zugriff verweigert")
+                        .setDescription("Sie sind nicht berechtigt, die gesperrten Benutzer anzuzeigen.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -150,22 +150,22 @@ const BanCommand: Command = {
                 const bans = await Ban.find();
 
                 const bannedList =
-                    bans.map((ban: IBan) => `<@${ban.userId}>`).join("\n") || "No banned members.";
+                    bans.map((ban: IBan) => `<@${ban.userId}>`).join("\n") || "Keine gesperrten Mitglieder.";
                 const embed = new EmbedBuilder()
-                    .setColor("#00AAFF")
-                    .setTitle("Banned Members")
+                    .setColor("Random")
+                    .setTitle("Gesperrte Mitglieder")
                     .setDescription(bannedList)
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
             }
         } catch (error) {
-            console.error("[BanCommand] Error:", error);
+            console.error("Error:", error);
             const embed = new EmbedBuilder()
-                .setColor("#FF0000")
+                .setColor("Random")
                 .setTitle("Error")
                 .setDescription(
-                    "An error occurred while processing the command. Please try again later.",
+                    "Beim Verarbeiten des Befehls ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
                 )
                 .setTimestamp();
             await interaction.reply({ embeds: [embed], ephemeral: true });
