@@ -16,7 +16,6 @@ import LockdownCommand from "../commands/moderation/lockdown";
 import NicknameCommand from "../commands/moderation/nickname";
 import ClearCommand from "../commands/moderation/clear";
 import WarnCommand from "../commands/moderation/warn";
-import SurveyCommand from "../commands/moderation/survey";
 import AvatarCommand from "../commands/personal/avatar";
 import InviteCommand from "../commands/general/invite";
 import HelpCommand from "../commands/utility/help";
@@ -74,7 +73,6 @@ const commandFiles = [
     LockdownCommand,
     NicknameCommand,
     WarnCommand,
-    SurveyCommand,
     AvatarCommand,
     InviteCommand,
     HelpCommand,

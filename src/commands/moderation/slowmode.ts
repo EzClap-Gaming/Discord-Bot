@@ -19,7 +19,7 @@ const SlowmodeCommand: Command = {
                     option
                         .setName("time")
                         .setDescription(
-                            "Zeit in Sekunden zwischen Nachrichten (1-21600 Sekunden), auf 0 setzen, um den Slowmode zu deaktivieren.",
+                            "Zeit in Sekunden zwischen Nachrichten (1–21600), 0 zum Deaktivieren.",
                         )
                         .setRequired(true)
                         .setMinValue(0)

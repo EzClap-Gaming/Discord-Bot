@@ -11,7 +11,7 @@ const ClearCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("clear")
         .setDescription(
-            "Löscht Befehle oder Nachrichten. Kann nur von Benutzern mit Moderationsberechtigung verwendet werden.",
+            "Löscht Befehle oder Nachrichten.",
         )
         .addSubcommand((subcommand) =>
             subcommand
