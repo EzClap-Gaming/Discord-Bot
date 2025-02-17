@@ -43,7 +43,8 @@ const StealEmojiCommand: Command = {
 
             if (!botMember.permissions.has(PermissionFlagsBits.ManageGuildExpressions)) {
                 await interaction.reply({
-                    content: "Ich verfüge nicht über die erforderlichen Berechtigungen zum Verwalten von Emojis.",
+                    content:
+                        "Ich verfüge nicht über die erforderlichen Berechtigungen zum Verwalten von Emojis.",
                     ephemeral: true,
                 });
                 return;
@@ -51,7 +52,8 @@ const StealEmojiCommand: Command = {
 
             if (!member.permissions.has(PermissionFlagsBits.ManageGuildExpressions)) {
                 await interaction.reply({
-                    content: "Sie verfügen nicht über die erforderlichen Berechtigungen zum Verwalten von Emojis.",
+                    content:
+                        "Sie verfügen nicht über die erforderlichen Berechtigungen zum Verwalten von Emojis.",
                     ephemeral: true,
                 });
                 return;

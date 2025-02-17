@@ -1,35 +1,37 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-export interface IGiveaways extends Document {
-    id: string;
+export interface IGiveaway extends Document {
+    _id: string;
     messageId: string;
     channelId: string;
     guildId: string;
     title: string;
     description: string;
-    winners: number;
-    endsAt: Date;
+    winnerNumber: number;
     participants: string[];
+    winner: string;
+    endsAt: Date;
     status: "active" | "ended";
     createdAt: Date;
     updatedAt: Date;
 }
 
-const GiveawaysSchema: Schema = new Schema<IGiveaways>(
+const GiveawaySchema: Schema = new Schema<IGiveaway>(
     {
-        id: { type: String, default: () => UuidUtil.generateId() },
+        _id: { type: String, default: () => UuidUtil.generateId() },
         messageId: { type: String, required: true },
         channelId: { type: String, required: true },
         guildId: { type: String, required: true },
         title: { type: String, required: true },
         description: { type: String, required: true },
-        winners: { type: Number, required: true, min: 1 },
-        endsAt: { type: Date, required: true },
+        winnerNumber: { type: Number, required: true, min: 1 },
         participants: { type: [String], default: [] },
+        winner: { type: String, required: false },
+        endsAt: { type: Date, required: true },
         status: { type: String, enum: ["active", "ended"], default: "active" },
     },
     { timestamps: true },
 );
 
-export const Giveaways = mongoose.model<IGiveaways>("Giveaways", GiveawaysSchema);
+export const Giveaway = mongoose.model<IGiveaway>("Giveaway", GiveawaySchema);

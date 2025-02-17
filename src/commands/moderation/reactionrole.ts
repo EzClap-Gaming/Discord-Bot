@@ -91,7 +91,8 @@ const ReactionRoleCommand: Command = {
                 const [emoji, roleMention] = pair.split("->").map((str) => str.trim());
                 if (!emoji || !roleMention) {
                     await interaction.reply({
-                        content: "Ungültiges Format. Verwenden Sie für jeden Eintrag „emoji -> @Rolle“.",
+                        content:
+                            "Ungültiges Format. Verwenden Sie für jeden Eintrag „emoji -> @Rolle“.",
                     });
                     return;
                 }

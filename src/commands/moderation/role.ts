@@ -22,7 +22,10 @@ const RoleCommand: Command = {
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
-                    option.setName("role").setDescription("Die zu vergebende Rolle.").setRequired(true),
+                    option
+                        .setName("role")
+                        .setDescription("Die zu vergebende Rolle.")
+                        .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
@@ -36,7 +39,10 @@ const RoleCommand: Command = {
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
-                    option.setName("role").setDescription("Die zu entfernende Rolle.").setRequired(true),
+                    option
+                        .setName("role")
+                        .setDescription("Die zu entfernende Rolle.")
+                        .setRequired(true),
                 ),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),

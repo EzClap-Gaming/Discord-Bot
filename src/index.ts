@@ -19,6 +19,7 @@ import { reputationEmitter } from "./utils/reputationEmitter";
 import { handleReadyEvent } from "./events/ready";
 import { handleActivityTracker } from "./events/activity_tracker";
 import { handleWelcomeEvent } from "./events/welcome_message";
+import { handleGiveawayReaction } from "./events/giveaway_reaction";
 
 dotenv.config();
 
@@ -54,9 +55,7 @@ for (const folder of commandFolders) {
                 console.info(`Loading Command: ${file}`);
 
                 if (!command?.data?.name) {
-                    console.error(
-                        `Command in file ${file} is missing a 'data.name' property.`,
-                    );
+                    console.error(`Command in file ${file} is missing a 'data.name' property.`);
                     return;
                 }
 
@@ -84,6 +83,7 @@ handleActivityTracker(client);
 handleXPListener(client);
 handleWelcomeEvent(client);
 
+handleGiveawayReaction(client);
 handleCreateTicketButton(client);
 handleClaimTicketButton(client);
 handleCloseTicketButton(client);

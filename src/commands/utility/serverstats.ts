@@ -34,7 +34,6 @@ const ServerStatsCommand: Command = {
                 channel.isVoiceBased(),
             ).size;
             const serverCreationDate = `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`;
-            const iconUrl = guild.iconURL() || "";
 
             const embed = new EmbedBuilder()
                 .setTitle(`📊 **Server-Statistiken für ${guild.name}**`)
@@ -59,7 +58,6 @@ const ServerStatsCommand: Command = {
                         inline: false,
                     },
                 )
-                .setImage(iconUrl)
                 .setFooter({
                     text: `Abgerufen von ${interaction.user.tag}`,
                     iconURL: interaction.user.displayAvatarURL(),

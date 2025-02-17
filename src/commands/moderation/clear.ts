@@ -10,9 +10,7 @@ import { Command } from "../../functions/handleCommands";
 const ClearCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("clear")
-        .setDescription(
-            "Löscht Befehle oder Nachrichten.",
-        )
+        .setDescription("Löscht Befehle oder Nachrichten.")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("commands")
@@ -21,7 +19,7 @@ const ClearCommand: Command = {
                     option
                         .setName("amount")
                         .setDescription(
-                            'Geben Sie die Anzahl der zu löschenden Befehle an oder geben Sie „all“ ein, um alle zu löschen.',
+                            "Geben Sie die Anzahl der zu löschenden Befehle an oder geben Sie „all“ ein, um alle zu löschen.",
                         )
                         .setRequired(false)
                         .addChoices({ name: "All", value: "all" }),
@@ -35,7 +33,7 @@ const ClearCommand: Command = {
                     option
                         .setName("amount")
                         .setDescription(
-                            'Geben Sie die Anzahl der zu löschenden Nachrichten an oder geben Sie „alle“ ein, um alle zu löschen.',
+                            "Geben Sie die Anzahl der zu löschenden Nachrichten an oder geben Sie „alle“ ein, um alle zu löschen.",
                         )
                         .setRequired(false)
                         .addChoices({ name: "All", value: "all" }),
@@ -73,7 +71,7 @@ const ClearCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Random")
                         .setTitle("Ungültige Eingabe")
-                        .setDescription('Bitte geben Sie „alle“ an, um alle Befehle zu löschen.')
+                        .setDescription("Bitte geben Sie „alle“ an, um alle Befehle zu löschen.")
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                 }
@@ -116,7 +114,9 @@ const ClearCommand: Command = {
                         const embed = new EmbedBuilder()
                             .setColor("Random")
                             .setTitle("Ungültiger Kanal")
-                            .setDescription("Dieser Befehl kann nur in einem Textkanal verwendet werden.")
+                            .setDescription(
+                                "Dieser Befehl kann nur in einem Textkanal verwendet werden.",
+                            )
                             .setTimestamp();
                         await interaction.reply({ embeds: [embed], ephemeral: true });
                     }
@@ -146,7 +146,9 @@ const ClearCommand: Command = {
                         const embed = new EmbedBuilder()
                             .setColor("Random")
                             .setTitle("Ungültiger Kanal")
-                            .setDescription("Dieser Befehl kann nur in einem Textkanal verwendet werden.")
+                            .setDescription(
+                                "Dieser Befehl kann nur in einem Textkanal verwendet werden.",
+                            )
                             .setTimestamp();
                         await interaction.reply({ embeds: [embed], ephemeral: true });
                     }

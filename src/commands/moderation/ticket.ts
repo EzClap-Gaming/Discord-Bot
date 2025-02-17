@@ -40,7 +40,9 @@ const TicketCommand: Command = {
                 .addRoleOption((option) =>
                     option
                         .setName("role")
-                        .setDescription("Die Rolle, die angepingt wird, wenn ein Ticket erstellt wird.")
+                        .setDescription(
+                            "Die Rolle, die angepingt wird, wenn ein Ticket erstellt wird.",
+                        )
                         .setRequired(true),
                 )
                 .addRoleOption((option) =>
@@ -280,7 +282,9 @@ const TicketCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Red")
                         .setTitle("Error")
-                        .setDescription("Das Ticketsystem ist für diesen Server nicht eingerichtet.")
+                        .setDescription(
+                            "Das Ticketsystem ist für diesen Server nicht eingerichtet.",
+                        )
                         .setTimestamp();
 
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -338,7 +342,8 @@ const TicketCommand: Command = {
                     .setColor("Random")
                     .setTitle("Offene Tickets")
                     .setDescription(
-                        ticketList || "In der Kategorie wurden keine Tickets mit gültigen Einbettungen gefunden.",
+                        ticketList ||
+                            "In der Kategorie wurden keine Tickets mit gültigen Einbettungen gefunden.",
                     )
                     .setTimestamp();
 
@@ -406,7 +411,9 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("Protokollkanal nicht gefunden. Bitte wenden Sie sich an einen Administrator.")
+                    .setDescription(
+                        "Protokollkanal nicht gefunden. Bitte wenden Sie sich an einen Administrator.",
+                    )
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -419,7 +426,9 @@ const TicketCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Red")
                     .setTitle("Error")
-                    .setDescription("Ticketnachricht nicht gefunden. Bitte überprüfen Sie die Nachrichten-ID.")
+                    .setDescription(
+                        "Ticketnachricht nicht gefunden. Bitte überprüfen Sie die Nachrichten-ID.",
+                    )
                     .setTimestamp();
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });

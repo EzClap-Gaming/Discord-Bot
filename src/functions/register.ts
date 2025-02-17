@@ -41,6 +41,8 @@ import GiveawayCommand from "../commands/moderation/giveaway";
 import ServerStatsCommand from "../commands/utility/serverstats";
 import QRCodeCommand from "../commands/utility/qrcode";
 import PDFCommand from "../commands/utility/pdf";
+import ActivityCommand from "../commands/general/activity";
+import ReportCommand from "../commands/moderation/report";
 
 dotenv.config();
 
@@ -98,6 +100,8 @@ const commandFiles = [
     ServerStatsCommand,
     QRCodeCommand,
     PDFCommand,
+    ActivityCommand,
+    ReportCommand,
 ];
 
 const commands: any[] = [];

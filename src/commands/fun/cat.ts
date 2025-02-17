@@ -4,7 +4,7 @@ import { Command } from "../../functions/handleCommands";
 
 const CatCommand: Command = {
     data: new SlashCommandBuilder()
-        .setName("katze")
+        .setName("cat")
         .setDescription("Zeigt ein zufälliges Katzenbild."),
 
     async execute(interaction: ChatInputCommandInteraction) {

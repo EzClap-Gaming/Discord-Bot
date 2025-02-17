@@ -6,6 +6,7 @@ import {
     TextChannel,
 } from "discord.js";
 import { Command } from "../../functions/handleCommands";
+import { SlowmodeModel } from "../../models/Slowmode";
 
 const SlowmodeCommand: Command = {
     data: new SlashCommandBuilder()
@@ -25,26 +26,24 @@ const SlowmodeCommand: Command = {
                         .setMinValue(0)
                         .setMaxValue(21600),
                 )
-                .addChannelOption(
-                    (option) =>
-                        option
-                            .setName("channel")
-                            .setDescription("Der Kanal, für den der Slowmode eingestellt werden soll.")
-                            .setRequired(true)
-                            .addChannelTypes(0), // Only text channels
+                .addChannelOption((option) =>
+                    option
+                        .setName("channel")
+                        .setDescription("Der Kanal, für den der Slowmode eingestellt werden soll.")
+                        .setRequired(true)
+                        .addChannelTypes(0),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("remove")
                 .setDescription("Entfernt den Slowmode für den angegebenen Kanal.")
-                .addChannelOption(
-                    (option) =>
-                        option
-                            .setName("channel")
-                            .setDescription("Der Kanal, aus dem der Slowmode entfernt werden soll.")
-                            .setRequired(true)
-                            .addChannelTypes(0), // Only text channels
+                .addChannelOption((option) =>
+                    option
+                        .setName("channel")
+                        .setDescription("Der Kanal, aus dem der Slowmode entfernt werden soll.")
+                        .setRequired(true)
+                        .addChannelTypes(0),
                 ),
         ),
     async execute(interaction: ChatInputCommandInteraction) {
@@ -68,9 +67,18 @@ const SlowmodeCommand: Command = {
 
                 if (channel instanceof TextChannel) {
                     await channel.setRateLimitPerUser(time);
+
+                    await SlowmodeModel.findOneAndUpdate(
+                        { guildId: interaction.guildId!, channelId: channel.id },
+                        { slowmode: time, lastUpdated: new Date() },
+                        { upsert: true },
+                    );
+
                     const slowmodeEmbed = new EmbedBuilder()
                         .setColor("Random")
-                        .setDescription(`Der Slowmode wurde in ${channel} auf ${time} Sekunden eingestellt.`);
+                        .setDescription(
+                            `Der Slowmode wurde in ${channel} auf ${time} Sekunden eingestellt.`,
+                        );
                     await interaction.reply({ embeds: [slowmodeEmbed], ephemeral: true });
                 } else {
                     const notTextChannelEmbed = new EmbedBuilder()
@@ -83,7 +91,14 @@ const SlowmodeCommand: Command = {
                 }
             } else if (subcommand === "remove") {
                 if (channel instanceof TextChannel) {
-                    await channel.setRateLimitPerUser(0); // Disable slowmode
+                    await channel.setRateLimitPerUser(0);
+
+                    await SlowmodeModel.findOneAndUpdate(
+                        { guildId: interaction.guildId!, channelId: channel.id },
+                        { slowmode: 0, lastUpdated: new Date() },
+                        { upsert: true },
+                    );
+
                     const removeSlowmodeEmbed = new EmbedBuilder()
                         .setColor("Random")
                         .setDescription(`Der Slowmode wurde aus ${channel} entfernt.`);

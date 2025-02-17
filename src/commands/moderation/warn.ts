@@ -23,10 +23,7 @@ const WarnCommand: Command = {
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
-                    option
-                        .setName("reason")
-                        .setDescription("Grund der Warnung.")
-                        .setRequired(true),
+                    option.setName("reason").setDescription("Grund der Warnung.").setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
@@ -42,7 +39,9 @@ const WarnCommand: Command = {
                 .addStringOption((option) =>
                     option
                         .setName("identifier")
-                        .setDescription("Die zu entfernende Warnnummer oder der zu entfernende Warntext.")
+                        .setDescription(
+                            "Die zu entfernende Warnnummer oder der zu entfernende Warntext.",
+                        )
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
@@ -59,7 +58,9 @@ const WarnCommand: Command = {
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("Das Mitglied, für das Warnungen aufgelistet werden sollen.")
+                        .setDescription(
+                            "Das Mitglied, für das Warnungen aufgelistet werden sollen.",
+                        )
                         .setRequired(true),
                 ),
         ),
@@ -124,7 +125,9 @@ const WarnCommand: Command = {
                 const dmEmbed = new EmbedBuilder()
                     .setColor("Random")
                     .setTitle("Sie wurden gewarnt!")
-                    .setDescription(`Sie haben eine Warnung auf dem Server erhalten. Grund: ${reason}`)
+                    .setDescription(
+                        `Sie haben eine Warnung auf dem Server erhalten. Grund: ${reason}`,
+                    )
                     .setFooter({
                         text: `Ausgestellt von ${interaction.user.username}`,
                         iconURL: interaction.user.displayAvatarURL(),
@@ -177,9 +180,7 @@ const WarnCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Random")
                     .setTitle("Warnung entfernt")
-                    .setDescription(
-                        `Die folgende Warnung wurde aus ${member.user.tag} entfernt:`,
-                    )
+                    .setDescription(`Die folgende Warnung wurde aus ${member.user.tag} entfernt:`)
                     .addFields({ name: "Warnung entfernt", value: warningToRemove.reason })
                     .setFooter({
                         text: `Ausgeführt von ${interaction.user.username}`,
@@ -237,7 +238,9 @@ const WarnCommand: Command = {
                     return;
                 }
 
-                const warningList = warnings.map((w) => `• ${w.reason} (ID: ${w._id})`).join("\n");
+                const warningList = warnings
+                    .map((w) => `• ${w.reason} (ID: ||${w._id}||)`)
+                    .join("\n");
 
                 const embed = new EmbedBuilder()
                     .setColor("Random")

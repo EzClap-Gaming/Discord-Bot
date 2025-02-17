@@ -17,10 +17,16 @@ const MuteCommand: Command = {
                 .setName("add")
                 .setDescription("Schaltet ein Mitglied auf dem Server stumm.")
                 .addUserOption((option) =>
-                    option.setName("member").setDescription("Das stummzuschaltende Mitglied").setRequired(true),
+                    option
+                        .setName("member")
+                        .setDescription("Das stummzuschaltende Mitglied")
+                        .setRequired(true),
                 )
                 .addStringOption((option) =>
-                    option.setName("reason").setDescription("Grund für die Stummschaltung").setRequired(true),
+                    option
+                        .setName("reason")
+                        .setDescription("Grund für die Stummschaltung")
+                        .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
@@ -30,7 +36,9 @@ const MuteCommand: Command = {
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("Das Mitglied, dessen Stummschaltung aufgehoben werden soll")
+                        .setDescription(
+                            "Das Mitglied, dessen Stummschaltung aufgehoben werden soll",
+                        )
                         .setRequired(true),
                 )
                 .addIntegerOption((option) =>
@@ -53,16 +61,23 @@ const MuteCommand: Command = {
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("Das Mitglied, dessen Stummschaltungen aufgelistet werden sollen")
+                        .setDescription(
+                            "Das Mitglied, dessen Stummschaltungen aufgelistet werden sollen",
+                        )
                         .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("tempmute")
-                .setDescription("Schaltet ein Mitglied auf dem Server vorübergehend für eine angegebene Zeit stumm.")
+                .setDescription(
+                    "Schaltet ein Mitglied auf dem Server vorübergehend für eine angegebene Zeit stumm.",
+                )
                 .addUserOption((option) =>
-                    option.setName("member").setDescription("Das stummzuschaltende Mitglied").setRequired(true),
+                    option
+                        .setName("member")
+                        .setDescription("Das stummzuschaltende Mitglied")
+                        .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
@@ -71,17 +86,24 @@ const MuteCommand: Command = {
                         .setRequired(true),
                 )
                 .addStringOption((option) =>
-                    option.setName("reason").setDescription("Grund für die Stummschaltung").setRequired(true),
+                    option
+                        .setName("reason")
+                        .setDescription("Grund für die Stummschaltung")
+                        .setRequired(true),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("remove-all")
-                .setDescription("Entfernt alle Stummschaltungen für ein Mitglied vom Server und aus der Datenbank.")
+                .setDescription(
+                    "Entfernt alle Stummschaltungen für ein Mitglied vom Server und aus der Datenbank.",
+                )
                 .addUserOption((option) =>
                     option
                         .setName("member")
-                        .setDescription("Das Mitglied, dessen Stummschaltungen aufgehoben werden sollen")
+                        .setDescription(
+                            "Das Mitglied, dessen Stummschaltungen aufgehoben werden sollen",
+                        )
                         .setRequired(true),
                 ),
         ),
@@ -93,7 +115,9 @@ const MuteCommand: Command = {
                 const embed = new EmbedBuilder()
                     .setColor("Random")
                     .setTitle("Zugriff verweigert")
-                    .setDescription("Sie sind nicht berechtigt, Mitglieder stummzuschalten bzw. die Stummschaltung aufzuheben.")
+                    .setDescription(
+                        "Sie sind nicht berechtigt, Mitglieder stummzuschalten bzw. die Stummschaltung aufzuheben.",
+                    )
                     .setTimestamp();
                 await interaction.reply({ embeds: [embed], ephemeral: true });
                 return;
@@ -121,7 +145,7 @@ const MuteCommand: Command = {
                         .setColor("Random")
                         .setTitle("Stummschaltungsrolle nicht gefunden")
                         .setDescription(
-                            'Stummschaltungsrolle nicht gefunden. Bitte erstellen Sie eine „Stummschaltungsrolle“ und versuchen Sie es erneut.',
+                            "Stummschaltungsrolle nicht gefunden. Bitte erstellen Sie eine „Stummschaltungsrolle“ und versuchen Sie es erneut.",
                         )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -202,7 +226,9 @@ const MuteCommand: Command = {
                         const embed = new EmbedBuilder()
                             .setColor("Random")
                             .setTitle("Mitglied nicht stummgeschaltet")
-                            .setDescription(`Die Stummschaltung von ${member.user.tag} wurde aufgehoben.`)
+                            .setDescription(
+                                `Die Stummschaltung von ${member.user.tag} wurde aufgehoben.`,
+                            )
                             .addFields(
                                 { name: "Letzter Stummschaltgrund", value: muteRecord.reason },
                                 { name: "Grund für Aufhebung der Stummschaltung", value: reason },
@@ -252,7 +278,9 @@ const MuteCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Random")
                         .setTitle(`Stummschaltungen von ${member.user.tag}`)
-                        .setDescription(`Nachfolgend sind alle Stummschaltungen für ${member.user.tag} aufgeführt:`)
+                        .setDescription(
+                            `Nachfolgend sind alle Stummschaltungen für ${member.user.tag} aufgeführt:`,
+                        )
                         .addFields(
                             mutes.map((mute) => ({
                                 name: `Stummschalten #${mute.muteNumber} am ${new Date(mute.mutedAt).toLocaleString()}`,
@@ -307,7 +335,7 @@ const MuteCommand: Command = {
                         .setColor("Random")
                         .setTitle("Stummschaltungsrolle nicht gefunden")
                         .setDescription(
-                            'Stummschaltungsrolle nicht gefunden. Bitte erstellen Sie eine „Stummschaltungsrolle“ und versuchen Sie es erneut.',
+                            "Stummschaltungsrolle nicht gefunden. Bitte erstellen Sie eine „Stummschaltungsrolle“ und versuchen Sie es erneut.",
                         )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -345,7 +373,9 @@ const MuteCommand: Command = {
                 const dmEmbed = new EmbedBuilder()
                     .setColor("Random")
                     .setTitle("Sie wurden stummgeschaltet")
-                    .setDescription(`Sie wurden für ${time} stummgeschaltet aufgrund von: ${reason}.`)
+                    .setDescription(
+                        `Sie wurden für ${time} stummgeschaltet aufgrund von: ${reason}.`,
+                    )
                     .setTimestamp();
                 await member.send({ embeds: [dmEmbed] });
 
@@ -404,7 +434,9 @@ const MuteCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Random")
                         .setTitle("Alle Stummschaltungen entfernt")
-                        .setDescription(`Alle Stummschaltungen für ${member.user.tag} wurden entfernt.`)
+                        .setDescription(
+                            `Alle Stummschaltungen für ${member.user.tag} wurden entfernt.`,
+                        )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
 
@@ -421,7 +453,9 @@ const MuteCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Random")
                         .setTitle("Keine Stummschaltungen gefunden")
-                        .setDescription(`${member.user.tag} hat keine Stummschaltungen zum Entfernen.`)
+                        .setDescription(
+                            `${member.user.tag} hat keine Stummschaltungen zum Entfernen.`,
+                        )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                 }

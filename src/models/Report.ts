@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-export interface IReports extends Document {
+export interface IReport extends Document {
     id: string;
     type: string;
     reporterId: string;
@@ -17,7 +17,7 @@ export interface IReports extends Document {
     updatedAt: Date;
 }
 
-const reportsSchema: Schema = new Schema<IReports>(
+const reportsSchema: Schema = new Schema<IReport>(
     {
         id: { type: String, default: () => UuidUtil.generateId() },
         type: { type: String, required: true },
@@ -29,9 +29,13 @@ const reportsSchema: Schema = new Schema<IReports>(
         reason: { type: String, required: true },
         description: { type: String },
         priority: { type: String, required: true },
-        status: { type: String, default: "Open" },
+        status: {
+            type: String,
+            enum: ["Open", "In Progress", "Resolved", "Closed", "Archived"],
+            default: "Open",
+        },
     },
     { timestamps: true },
 );
 
-export const Reports = mongoose.model<IReports>("Reports", reportsSchema);
+export const Report = mongoose.model<IReport>("Report", reportsSchema);

@@ -18,7 +18,10 @@ const BanCommand: Command = {
                 .setName("add")
                 .setDescription("Ein Mitglied vom Server verbannen.")
                 .addUserOption((option) =>
-                    option.setName("member").setDescription("Das zu verbannende Mitglied").setRequired(true),
+                    option
+                        .setName("member")
+                        .setDescription("Das zu verbannende Mitglied")
+                        .setRequired(true),
                 )
                 .addStringOption((option) =>
                     option
@@ -102,7 +105,9 @@ const BanCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Random")
                         .setTitle("Zugriff verweigert")
-                        .setDescription("Sie sind nicht berechtigt, die Sperre von Mitgliedern aufzuheben.")
+                        .setDescription(
+                            "Sie sind nicht berechtigt, die Sperre von Mitgliedern aufzuheben.",
+                        )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -140,7 +145,9 @@ const BanCommand: Command = {
                     const embed = new EmbedBuilder()
                         .setColor("Random")
                         .setTitle("Zugriff verweigert")
-                        .setDescription("Sie sind nicht berechtigt, die gesperrten Benutzer anzuzeigen.")
+                        .setDescription(
+                            "Sie sind nicht berechtigt, die gesperrten Benutzer anzuzeigen.",
+                        )
                         .setTimestamp();
                     await interaction.reply({ embeds: [embed], ephemeral: true });
                     return;
@@ -150,7 +157,8 @@ const BanCommand: Command = {
                 const bans = await Ban.find();
 
                 const bannedList =
-                    bans.map((ban: IBan) => `<@${ban.userId}>`).join("\n") || "Keine gesperrten Mitglieder.";
+                    bans.map((ban: IBan) => `<@${ban.userId}>`).join("\n") ||
+                    "Keine gesperrten Mitglieder.";
                 const embed = new EmbedBuilder()
                     .setColor("Random")
                     .setTitle("Gesperrte Mitglieder")

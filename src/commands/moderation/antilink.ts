@@ -20,7 +20,9 @@ const AntiLinkCommand: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("allowed-channels-add")
-                .setDescription("Fügen Sie zum Schutz vor Links einen Kanal zu den zulässigen Kanälen hinzu.")
+                .setDescription(
+                    "Fügen Sie zum Schutz vor Links einen Kanal zu den zulässigen Kanälen hinzu.",
+                )
                 .addStringOption((option) =>
                     option
                         .setName("channel")
@@ -31,7 +33,9 @@ const AntiLinkCommand: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("allowed-channels-remove")
-                .setDescription("Entfernen Sie zum Schutz vor Links einen Kanal aus den zulässigen Kanälen.")
+                .setDescription(
+                    "Entfernen Sie zum Schutz vor Links einen Kanal aus den zulässigen Kanälen.",
+                )
                 .addStringOption((option) =>
                     option
                         .setName("channel")

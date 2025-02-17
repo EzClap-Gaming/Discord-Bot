@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { Command } from "../../functions/handleCommands";
+import { PollModel } from "../../models/Poll";
 
 const PollCommand: Command = {
     data: new SlashCommandBuilder()
@@ -19,6 +20,18 @@ const PollCommand: Command = {
     async execute(interaction: ChatInputCommandInteraction) {
         const question = interaction.options.getString("question")!;
         const duration = interaction.options.getInteger("duration") || 5;
+
+        const newPoll = new PollModel({
+            guildId: interaction.guildId!,
+            question: question,
+            creatorId: interaction.user.id,
+            duration: duration,
+            yesVotes: 0,
+            noVotes: 0,
+            endedAt: null,
+        });
+
+        await newPoll.save();
 
         const pollEmbed = new EmbedBuilder()
             .setColor("Random")
@@ -58,6 +71,15 @@ const PollCommand: Command = {
                 .setTimestamp();
 
             await pollMessage.edit({ embeds: [resultEmbed] });
+
+            await PollModel.updateOne(
+                { _id: newPoll._id },
+                {
+                    endedAt: new Date(),
+                    yesVotes: yesVotes - 1,
+                    noVotes: noVotes - 1,
+                },
+            );
         }, duration * 60000);
     },
 };

@@ -1,7 +1,8 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import { Command } from "../../functions/handleCommands";
 import { Activity } from "../../models/Activity";
 
-export default {
+const ActivityCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("activity")
         .setDescription("Verwaltet Aktivitätsstatistiken.")
@@ -37,13 +38,18 @@ export default {
                     )
                     .setTimestamp();
 
-                topUsers.forEach((user, index) => {
+                for (const [index, user] of topUsers.entries()) {
+                    const member =
+                        interaction.guild?.members.cache.get(user.userId) ||
+                        (await interaction.guild?.members.fetch(user.userId).catch(() => null));
+                    const username = member ? member.user.tag : `Unbekannt (${user.userId})`;
+
                     embed.addFields({
-                        name: `#${index + 1} <@${user.userId}>`,
+                        name: `#${index + 1} ${username}`,
                         value: `📝 Nachrichten: **${user.messagesSent}**\n🎙 Sprachzeit: **${Math.floor(user.voiceTime / 60)} min**`,
                         inline: false,
                     });
-                });
+                }
 
                 await interaction.reply({ embeds: [embed] });
             }
@@ -56,3 +62,5 @@ export default {
         }
     },
 };
+
+export default ActivityCommand;

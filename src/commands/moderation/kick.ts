@@ -5,13 +5,17 @@ import {
     PermissionFlagsBits,
 } from "discord.js";
 import { Command } from "../../functions/handleCommands";
+import { KickModel } from "../../models/Kick";
 
 const KickCommand: Command = {
     data: new SlashCommandBuilder()
         .setName("kick")
         .setDescription("Einen Benutzer vom Server werfen.")
         .addUserOption((option) =>
-            option.setName("member").setDescription("Das Mitglied, das rausgeschmissen werden soll").setRequired(true),
+            option
+                .setName("member")
+                .setDescription("Das Mitglied, das rausgeschmissen werden soll")
+                .setRequired(true),
         )
         .addStringOption((option) =>
             option.setName("reason").setDescription("Der Grund für den Kick").setRequired(false),
@@ -73,6 +77,16 @@ const KickCommand: Command = {
 
         try {
             await memberToKick.kick(reason);
+
+            const newKick = new KickModel({
+                guildId: interaction.guildId,
+                memberId: memberToKick.id,
+                kickerId: interaction.user.id,
+                reason: reason,
+            });
+
+            await newKick.save();
+
             await interaction.reply({
                 content: `${memberToKick.user.tag} wurde erfolgreich vom Server geworfen.`,
                 ephemeral: true,

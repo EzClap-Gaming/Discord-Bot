@@ -5,7 +5,7 @@ import {
     TextChannel,
 } from "discord.js";
 import { Command } from "../../functions/handleCommands";
-import { Giveaways } from "../../models/Giveaway";
+import { Giveaway } from "../../models/Giveaway";
 
 const GiveawayCommand: Command = {
     data: new SlashCommandBuilder()
@@ -53,7 +53,10 @@ const GiveawayCommand: Command = {
                 .setName("reroll")
                 .setDescription("Ermittelt neue Gewinner für ein beendetes Giveaway.")
                 .addStringOption((option) =>
-                    option.setName("id").setDescription("ID des Giveaways").setRequired(true),
+                    option
+                        .setName("id")
+                        .setDescription("Message ID des Giveaways")
+                        .setRequired(true),
                 ),
         ),
 
@@ -65,39 +68,81 @@ const GiveawayCommand: Command = {
             const description = interaction.options.getString("description", true);
             const duration = interaction.options.getInteger("duration", true);
             const winnersCount = interaction.options.getInteger("winners", true);
-
-            const endTime = new Date(Date.now() + duration * 60000);
+            const endsAt = new Date(Date.now() + duration * 60000);
 
             try {
-                const giveaway = new Giveaways({
-                    title,
-                    description,
-                    endTime,
-                    winners: winnersCount,
-                    participants: [],
-                    status: "active",
-                });
-
-                await giveaway.save();
-
                 const embed = new EmbedBuilder()
                     .setTitle(`🎉 Giveaway: ${title}`)
                     .setDescription(
-                        `${description}\n\nEndet am: ${endTime.toLocaleString()}\n\nReagiere mit 🎉, um teilzunehmen!`,
+                        `${description}\n\nKlicke auf den Button, um teilzunehmen!\n\nEndet am: ${endsAt.toLocaleString()}`,
                     )
                     .setColor("Random");
 
                 const channel = interaction.channel as TextChannel;
-                const message = await channel.send({ embeds: [embed] });
+                const message = await channel.send({
+                    embeds: [embed],
+                    components: [
+                        {
+                            type: 1, // ActionRow
+                            components: [
+                                {
+                                    type: 2, // Button
+                                    style: 1, // Primary Button
+                                    label: "🎉 Teilnehmen (0)", // Anfangs 0 Teilnehmer
+                                    customId: "join_giveaway", // Setze die customId für den Button
+                                },
+                            ],
+                        },
+                    ],
+                });
 
-                giveaway.messageId = message.id;
+                const giveaway = new Giveaway({
+                    guildId: interaction.guildId,
+                    messageId: message.id,
+                    channelId: interaction.channelId,
+                    title,
+                    description,
+                    winnerNumber: winnersCount,
+                    participants: [], // Initial empty participants array
+                    winner: "", // Winner is empty initially
+                    endsAt,
+                    status: "active",
+                });
+
                 await giveaway.save();
-
-                await message.react("🎉");
                 await interaction.reply({
-                    content: "🎉 Giveaway erstellt!",
+                    content: "🎉 Giveaway erstellt! Du kannst jetzt teilnehmen!",
                     ephemeral: true,
                 });
+
+                setTimeout(async () => {
+                    const updatedGiveaway = await Giveaway.findById(giveaway._id);
+                    if (!updatedGiveaway || updatedGiveaway.status !== "active") return;
+
+                    updatedGiveaway.status = "ended";
+                    await updatedGiveaway.save();
+
+                    let winners: string[] = [];
+                    if (updatedGiveaway.participants.length > 0) {
+                        winners = [...updatedGiveaway.participants]
+                            .sort(() => Math.random() - 0.5)
+                            .slice(0, updatedGiveaway.winnerNumber);
+                    }
+
+                    updatedGiveaway.winner = winners.join(", ");
+                    await updatedGiveaway.save();
+
+                    const resultEmbed = new EmbedBuilder()
+                        .setTitle(`🏆 Giveaway Beendet: ${updatedGiveaway.title}`)
+                        .setDescription(
+                            winners.length > 0
+                                ? `🎉 **Glückwunsch an:** ${winners.map((w) => `<@${w}>`).join(", ")}`
+                                : "⚠️ Keine Teilnehmer, daher keine Gewinner!",
+                        )
+                        .setColor("Gold");
+
+                    await channel.send({ embeds: [resultEmbed] });
+                }, duration * 60000);
             } catch (error) {
                 console.error("Fehler:", error);
                 await interaction.reply({
@@ -108,9 +153,8 @@ const GiveawayCommand: Command = {
         }
 
         if (subcommand === "end") {
-            const id = interaction.options.getString("id", true);
-
-            const giveaway = await Giveaways.findById(id);
+            const messageId = interaction.options.getString("id", true);
+            const giveaway = await Giveaway.findOne({ messageId });
 
             if (!giveaway || giveaway.status !== "active") {
                 await interaction.reply({
@@ -131,8 +175,7 @@ const GiveawayCommand: Command = {
             const channel = interaction.channel as TextChannel;
             await channel.send({ embeds: [embed] });
 
-            const participants = giveaway.participants;
-            if (participants.length === 0) {
+            if (giveaway.participants.length === 0) {
                 await interaction.reply({
                     content: "⚠️ Keine Teilnehmer für dieses Giveaway.",
                     ephemeral: true,
@@ -140,16 +183,14 @@ const GiveawayCommand: Command = {
                 return;
             }
 
-            const winners: string[] = [];
-            while (winners.length < giveaway.winners && participants.length > 0) {
-                const randomIndex = Math.floor(Math.random() * participants.length);
-                const winner = participants.splice(randomIndex, 1)[0];
-                winners.push(winner);
-            }
+            const winners = giveaway.participants
+                .sort(() => Math.random() - 0.5)
+                .slice(0, giveaway.winnerNumber);
 
             await channel.send({
                 content: `🎉 Glückwunsch an die Gewinner: ${winners.map((w) => `<@${w}>`).join(", ")}`,
             });
+
             await interaction.reply({
                 content: "🎉 Giveaway wurde erfolgreich beendet.",
                 ephemeral: true,
@@ -157,7 +198,7 @@ const GiveawayCommand: Command = {
         }
 
         if (subcommand === "list") {
-            const giveaways = await Giveaways.find({ status: "active" });
+            const giveaways = await Giveaway.find({ status: "active" });
 
             if (giveaways.length === 0) {
                 await interaction.reply({
@@ -171,7 +212,10 @@ const GiveawayCommand: Command = {
                 .setTitle("🎉 Aktive Giveaways")
                 .setDescription(
                     giveaways
-                        .map((g) => `${g.title} - Endet am ${g.endsAt.toLocaleString()}`)
+                        .map(
+                            (g) =>
+                                `${g.title} - Endet am ${g.endsAt.toLocaleString()} - ||${g.messageId}||`,
+                        )
                         .join("\n"),
                 )
                 .setColor("Random");
@@ -180,11 +224,10 @@ const GiveawayCommand: Command = {
         }
 
         if (subcommand === "reroll") {
-            const id = interaction.options.getString("id", true);
+            const messageId = interaction.options.getString("id", true);
+            const giveaway = await Giveaway.findOne({ messageId });
 
-            const giveaway = await Giveaways.findById(id);
-
-            if (!giveaway || giveaway.status === "active") {
+            if (!giveaway || giveaway.status !== "ended") {
                 await interaction.reply({
                     content: "⚠️ Kein beendetes Giveaway mit dieser ID gefunden.",
                     ephemeral: true,
@@ -192,8 +235,7 @@ const GiveawayCommand: Command = {
                 return;
             }
 
-            const participants = giveaway.participants;
-            if (participants.length === 0) {
+            if (giveaway.participants.length === 0) {
                 await interaction.reply({
                     content: "⚠️ Keine Teilnehmer für dieses Giveaway.",
                     ephemeral: true,
@@ -201,15 +243,16 @@ const GiveawayCommand: Command = {
                 return;
             }
 
-            const winners: string[] = [];
-            while (winners.length < giveaway.winners && participants.length > 0) {
-                const randomIndex = Math.floor(Math.random() * participants.length);
-                const winner = participants.splice(randomIndex, 1)[0];
-                winners.push(winner);
-            }
+            const winners = giveaway.participants
+                .sort(() => Math.random() - 0.5)
+                .slice(0, giveaway.winnerNumber);
+
+            giveaway.winner = winners.join(", ");
+            await giveaway.save();
 
             await interaction.reply({
                 content: `🎉 Neue Gewinner: ${winners.map((w) => `<@${w}>`).join(", ")}`,
+                ephemeral: true,
             });
         }
     },

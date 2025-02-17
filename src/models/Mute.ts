@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-interface Mute extends Document {
+interface IMute extends Document {
     id: string;
     guildId: string;
     userId: string;
@@ -14,7 +14,7 @@ interface Mute extends Document {
     updatedAt: Date;
 }
 
-const muteSchema: Schema = new Schema<Mute>(
+const muteSchema: Schema = new Schema<IMute>(
     {
         id: { type: String, default: () => UuidUtil.generateId() },
         guildId: { type: String, required: true },
@@ -28,4 +28,4 @@ const muteSchema: Schema = new Schema<Mute>(
     { timestamps: true },
 );
 
-export const Mute = mongoose.model<Mute>("Mute", muteSchema);
+export const Mute = mongoose.model<IMute>("Mute", muteSchema);
