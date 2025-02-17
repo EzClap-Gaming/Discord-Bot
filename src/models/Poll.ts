@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-interface IPoll extends Document {
+export interface IPoll extends Document {
     id: string;
     guildId: string;
     question: string;

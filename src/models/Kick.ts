@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-interface IKick extends Document {
+export interface IKick extends Document {
     id: string;
     guildId: string;
     memberId: string;

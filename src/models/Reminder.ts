@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-interface IReminder extends Document {
+export interface IReminder extends Document {
     id: string;
     userId: string;
     message: string;

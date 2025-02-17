@@ -43,6 +43,7 @@ import QRCodeCommand from "../commands/utility/qrcode";
 import PDFCommand from "../commands/utility/pdf";
 import ActivityCommand from "../commands/general/activity";
 import ReportCommand from "../commands/moderation/report";
+import ReleaseCommand from "../commands/general/release";
 
 dotenv.config();
 
@@ -102,6 +103,7 @@ const commandFiles = [
     PDFCommand,
     ActivityCommand,
     ReportCommand,
+    ReleaseCommand,
 ];
 
 const commands: any[] = [];

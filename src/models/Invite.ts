@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UuidUtil } from "../utils/uuidUtil";
 
-interface IInvite extends Document {
+export interface IInvite extends Document {
     id: string;
     guildId: string;
     channelId: string;
